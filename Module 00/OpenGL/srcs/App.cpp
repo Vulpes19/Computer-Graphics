@@ -1,18 +1,18 @@
-#include "Window.hpp"
+#include "App.hpp"
 
-Window::Window(int width, int height, const char* title)
+App::App(int width, int height, const char* title)
 {
     this->width = width;
     this->height = height;
     this->title = title;
 }
 
-Window::~Window( void )
+App::~App( void )
 {
     glfwTerminate();
 }
 
-int Window::init( void )
+int App::init( void )
 {
     if (!glfwInit())
     {
@@ -41,7 +41,7 @@ int Window::init( void )
     return (EXIT_SUCCESS);
 }
 
-void    Window::render( void )
+void    App::render( void )
 {
     // glClearColor(0.2f, 0.3f, 0.3f, 1.0f); // Set the clear color to a nice green
     // glClear(GL_COLOR_BUFFER_BIT); // Clear the screen in preparation for new drawing
@@ -49,7 +49,7 @@ void    Window::render( void )
     glfwPollEvents(); // Look for events
 }
 
-GLFWwindow* Window::getWindow( void ) const
+GLFWwindow* App::getWindow( void ) const
 {
     return (window);
 }

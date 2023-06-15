@@ -4,11 +4,11 @@
 #include <glad.h>
 #include <glfw3.h>
 
-class Window
+class App
 {
     public:
-        Window(int width, int height, const char* title);
-        ~Window( void );
+        App(int width, int height, const char* title);
+        ~App( void );
         int init( void );
         GLFWwindow* getWindow( void ) const;
         // void clear( void );

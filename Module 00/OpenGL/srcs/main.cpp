@@ -1,12 +1,12 @@
-#include "Window.hpp"
+#include "App.hpp"
 
 int main( void )
 {
-    Window window(800, 600, "LearnOpenGL");
-    window.init();
-    while (!glfwWindowShouldClose(window.getWindow()))
+    App game(800, 600, "LearnOpenGL");
+    game.init();
+    while ( glfwWindowShouldClose(game.getWindow()) == GLFW_FALSE )
     {
-        window.render();
+        game.render();
     }
     return (EXIT_SUCCESS);
 }

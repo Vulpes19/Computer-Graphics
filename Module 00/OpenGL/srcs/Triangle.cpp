@@ -9,6 +9,8 @@ Triangle::Triangle( vec3 p1, vec3 p2, vec3 p3 )
     points.push_back(p1);
     points.push_back(p2);
     points.push_back(p3);
+    compileShaderProgram();
+    // exit(1);
 }
 
 Triangle::~Triangle( void )
@@ -21,16 +23,32 @@ void    Triangle::init( void )
         points[1].x, points[1].y, points[1].z,
         points[2].x, points[2].y, points[2].z
     };
-
     //generating a vertex buffer object that can store a large
     //number of vertices in the GPU's memory
+    glGenBuffers(1, &vertexArrObj);
     glGenBuffers(1, &vertexBufferObj);
+    glBindVertexArray(vertexArrObj);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObj);
 
     //copies user defined data into the currently bound buffer
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+
+    //specify how OpenGL should interpret the vertex data before rendering
+
+    glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0 );
+    glEnableVertexAttribArray(0);
+
+    glBindBuffer( GL_ARRAY_BUFFER, 0 );
+    glBindVertexArray(0);
 }
 
+void    Triangle::render( void )
+{
+    glUseProgram(shaderProgram);
+    glBindVertexArray(vertexArrObj);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+}
 void    Triangle::compileShaderProgram( void )
 {
     //simple shaders to display the triangle
@@ -63,7 +81,7 @@ void    Triangle::compileShaderProgram( void )
                             "void main()\n"
                             "{\n"
                             " fragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-                            "}\n";
+                            "}\n\0";
     GLuint  fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragmentShader, 1, &fragmentShaderStr, NULL);
     glCompileShader(fragmentShader);

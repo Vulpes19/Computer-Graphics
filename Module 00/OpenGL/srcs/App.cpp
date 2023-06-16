@@ -5,6 +5,8 @@ App::App(int width, int height, const char* title)
     this->width = width;
     this->height = height;
     this->title = title;
+    tr = new Triangle(vec3(-0.5f, -0.5f, 0.0f), vec3(0.0f, 0.5f, 0.0f), vec3(0.5f, -0.5f, 0.0f));
+    // exit(1);
 }
 
 App::~App( void )
@@ -38,6 +40,8 @@ int App::init( void )
         return (EXIT_FAILURE);
     }
     glViewport(0, 0, width, height);
+    // exit(1);
+    tr->init();
     return (EXIT_SUCCESS);
 }
 
@@ -45,6 +49,7 @@ void    App::render( void )
 {
     // glClearColor(0.2f, 0.3f, 0.3f, 1.0f); // Set the clear color to a nice green
     // glClear(GL_COLOR_BUFFER_BIT); // Clear the screen in preparation for new drawing
+    tr->render();
     glfwSwapBuffers(window); // Swap the buffers to display what was just drawn
     glfwPollEvents(); // Look for events
 }

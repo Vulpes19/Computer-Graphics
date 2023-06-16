@@ -3,6 +3,7 @@
 #include <iostream>
 #include <glad.h>
 #include <glfw3.h>
+#include "Triangle.hpp"
 
 class App
 {
@@ -20,4 +21,5 @@ class App
         int width;
         int height;
         const char* title;
+        Triangle *tr;
 };

@@ -2,14 +2,13 @@
 
 Triangle::Triangle( vec3 p1, vec3 p2, vec3 p3 )
 {
-    this->vertexArrObj = 0;
-    this->vertexBufferObj = 0;
-    this->IndexBufferObj = 0;
-    this->shaderProgram = 0;
+    // this->vertexArrObj = 0;
+    // this->vertexBufferObj = 0;
+    // this->IndexBufferObj = 0;
+    // // this->shaderProgram = 0;
     points.push_back(p1);
     points.push_back(p2);
     points.push_back(p3);
-    compileShaderProgram();
     // exit(1);
 }
 
@@ -18,6 +17,7 @@ Triangle::~Triangle( void )
 
 void    Triangle::init( void )
 {
+    compileShaderProgram();
     float vertices[] = {
         points[0].x, points[0].y, points[0].z,
         points[1].x, points[1].y, points[1].z,
@@ -25,7 +25,7 @@ void    Triangle::init( void )
     };
     //generating a vertex buffer object that can store a large
     //number of vertices in the GPU's memory
-    glGenBuffers(1, &vertexArrObj);
+    glGenVertexArrays(1, &vertexArrObj);
     glGenBuffers(1, &vertexBufferObj);
     glBindVertexArray(vertexArrObj);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObj);
@@ -58,10 +58,11 @@ void    Triangle::compileShaderProgram( void )
                             "layout (location = 0) in vec3 pos;\n"
                             "void main()\n"
                             "{\n"
-                            " gl_Position = vec4(pos.x, pos.y, pos.z, 1.0);\n"
+                            "   gl_Position = vec4(pos.x, pos.y, pos.z, 1.0);\n"
                             "}\0";
     //creating a shader object providing the type of the shader which is GL_VERTEX_SHADER
-    GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    // exit(1);
     glShaderSource(vertexShader, 1, &vertexShaderStr, NULL);
     glCompileShader(vertexShader);
 
@@ -104,7 +105,7 @@ void    Triangle::compileShaderProgram( void )
     if ( !success)
     {
         char infoLog[512];
-        glGetShaderInfoLog( shaderProgram, 512, NULL, infoLog );
+        glGetProgramInfoLog( shaderProgram, 512, NULL, infoLog );
         std::cerr << "Error: shader program linking failed\n" << infoLog << std::endl;
     }
     glDeleteShader(vertexShader);

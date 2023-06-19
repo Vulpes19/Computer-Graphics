@@ -1,0 +1,45 @@
+i# Compiled Object files
+*.sbr
+*.o
+*.obj
+
+# Compiled Dynamic Libraries
+*.dll
+*.so
+*.dylib
+
+# Compiled Static Libraries
+*.lib
+*.a
+
+# Executables
+*.exe
+
+# Visual Studio files
+.vs/
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.sln
+*.suo
+*.user
+
+# Compiled shader files
+*.cso
+
+# Debug files
+*.pdb
+*.ilk
+*.exp
+
+# Windows generated files
+Thumbs.db
+Desktop.ini
+
+# macOS generated files
+.DS_Store
+
+# Dependency directories
+/bin/
+/obj/
+

@@ -40,8 +40,9 @@ int App::init( void )
     }
     glViewport(0, 0, width, height);
     // exit(1);
-    tr = new Triangle(vec3(-0.5f, -0.5f, 0.0f), vec3(0.5f, -0.5f, 0.0f), vec3(0.0f, 0.5f, 0.0f));
-    tr->init();
+    tr = new Draw();
+    tr->initTriangle(vec3(-0.5f, -0.5f, 0.0f), vec3(0.5f, -0.5f, 0.0f), vec3(0.0f, 0.5f, 0.0f));
+    tr->initRectangle(vec3(-0.5f, 0.5f, 0.0f), vec3(0.5f, 0.5f, 0.0f), vec3(-0.5f, -0.5f, 0.0f), vec3(0.5f, -0.5f, 0.0f));
     return (EXIT_SUCCESS);
 }
 

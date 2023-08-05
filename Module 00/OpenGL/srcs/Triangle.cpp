@@ -1,27 +1,24 @@
 #include "Triangle.hpp"
 
-Triangle::Triangle( vec3 p1, vec3 p2, vec3 p3 )
+Draw::Draw( void )
 {
-    // this->vertexArrObj = 0;
-    // this->vertexBufferObj = 0;
-    // this->IndexBufferObj = 0;
-    // // this->shaderProgram = 0;
-    points.push_back(p1);
-    points.push_back(p2);
-    points.push_back(p3);
-    // exit(1);
+    this->vertexArrObj = 0;
+    this->vertexBufferObj = 0;
+    this->IndexBufferObj = 0;
+    this->shaderProgram = 0;
+    this->elementBufferObj = 0;
 }
 
-Triangle::~Triangle( void )
+Draw::~Draw( void )
 {}
 
-void    Triangle::init( void )
+void    Draw::initTriangle( vec3 p1, vec3 p2, vec3 p3 )
 {
     compileShaderProgram();
     float vertices[] = {
-        points[0].x, points[0].y, points[0].z,
-        points[1].x, points[1].y, points[1].z,
-        points[2].x, points[2].y, points[2].z
+        p1.x, p1.y, p1.z,
+        p2.x, p2.y, p2.z,
+        p3.x, p3.y, p3.z
     };
     //generating a vertex buffer object that can store a large
     //number of vertices in the GPU's memory
@@ -43,13 +40,35 @@ void    Triangle::init( void )
     glBindVertexArray(0);
 }
 
-void    Triangle::render( void )
+void    Draw::initRectangle( vec3 p1, vec3 p2, vec3 p3, vec3 p4 )
+{
+    compileShaderProgram();
+    float vertices[] = {
+        p1.x, p1.y, p1.z,
+        p2.x, p2.y, p2.z,
+        p3.x, p3.y, p3.z,
+        p4.x, p4.y, p4.z
+    };
+    unsigned int indicies[] = {
+        0, 2, 3,
+        0, 1, 3
+    };
+    glGenVertexArrays(1, &vertexArrObj);
+    glGenBuffers(1, &vertexBufferObj);
+    glGenBuffers(1, &elementBufferObj);
+    glBindVertexArray(vertexArrObj);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObj);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferObj);
+
+}
+
+void    Draw::renderTriangle( void )
 {
     glUseProgram(shaderProgram);
     glBindVertexArray(vertexArrObj);
     glDrawArrays(GL_TRIANGLES, 0, 3);
 }
-void    Triangle::compileShaderProgram( void )
+void    Draw::compileShaderProgram( void )
 {
     //simple shaders to display the triangle
 

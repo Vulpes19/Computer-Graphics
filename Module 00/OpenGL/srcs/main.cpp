@@ -1,5 +1,5 @@
 #include "App.hpp"
-#include "Triangle.hpp"
+#include "Draw.hpp"
 
 int main( void )
 {

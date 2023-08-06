@@ -2,7 +2,7 @@
 TARGET = opengl.exe
 
 #*SOURCE FILES *#
-FILES = main.cpp glad.cpp App.cpp Triangle.cpp
+FILES = main.cpp glad.cpp App.cpp Draw.cpp
 		
 SRC = $(addprefix srcs/, $(FILES))
 

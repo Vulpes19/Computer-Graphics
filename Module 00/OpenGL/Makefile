@@ -1,5 +1,5 @@
 #* TARGET *#
-TARGET = opengl.exe
+TARGET = two_triangles.exe
 
 #*SOURCE FILES *#
 FILES = main.cpp glad.cpp App.cpp Draw.cpp

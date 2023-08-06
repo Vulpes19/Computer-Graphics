@@ -40,6 +40,38 @@ void    Draw::initTriangle( vec3 p1, vec3 p2, vec3 p3 )
     glBindVertexArray(0);
 }
 
+void    Draw::initTwoTriangles( vec3 p1, vec3 p2, vec3 p3, vec3 p4, vec3 p5 )
+{
+    compileShaderProgram();
+    float vertices[] = {
+        p1.x, p1.y, p1.z,
+        p2.x, p2.y, p2.z,
+        p3.x, p3.y, p3.z,
+        p4.x, p4.y, p4.z,
+        p5.x, p5.y, p5.z,
+        p3.x, p3.y, p3.z
+    };
+    //generating a vertex buffer object that can store a large
+    //number of vertices in the GPU's memory
+    glGenVertexArrays(1, &vertexArrObj);
+    glGenBuffers(1, &vertexBufferObj);
+    glBindVertexArray(vertexArrObj);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObj);
+
+    //copies user defined data into the currently bound buffer
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+
+    //specify how OpenGL should interpret the vertex data before rendering
+
+    glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0 );
+    // glVertexAttribPointer( 2, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0 );
+    glEnableVertexAttribArray(0);
+
+    glBindBuffer( GL_ARRAY_BUFFER, 0 );
+    glBindVertexArray(0);
+}
+
 void    Draw::initRectangle( vec3 p1, vec3 p2, vec3 p3, vec3 p4 )
 {
     compileShaderProgram();
@@ -69,7 +101,7 @@ void    Draw::renderTriangle( void )
 {
     glUseProgram(shaderProgram);
     glBindVertexArray(vertexArrObj);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
 void    Draw::renderRectangle( void )

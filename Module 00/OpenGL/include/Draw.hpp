@@ -21,6 +21,7 @@ class Draw
         ~Draw( void );
         void    initTriangle( vec3, vec3, vec3 );
         void    initRectangle( vec3, vec3, vec3, vec3 );
+        void    initTwoTriangles( vec3, vec3, vec3, vec3, vec3 );
         void    compileShaderProgram( void );
         void    renderTriangle( void );
         void    renderRectangle( void );

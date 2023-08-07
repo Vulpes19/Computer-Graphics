@@ -136,7 +136,7 @@ void    Draw::renderTriangle( void )
 {
     glUseProgram(shaderProgram1);
     glBindVertexArray(vertexArrObj);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
 void    Draw::renderTwoTriangles( void )

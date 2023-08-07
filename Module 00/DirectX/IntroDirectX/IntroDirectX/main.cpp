@@ -1,11 +1,12 @@
 #include <windows.h>
 #include <winbase.h>
 
-int CALLBACK WinMain(
+int WINAPI	WinMain(
 	HINSTANCE hInstance,
 	HINSTANCE hPrevInstance,
-	PSTR lpCmdLine,
+	LPSTR lpCmdLine,
 	int nShowCmd)
 {
+	MessageBox(NULL, L"Learning DirectX 11 :)", L"Hello Window", MB_ICONEXCLAMATION | MB_OK);
 	return (0);
 }

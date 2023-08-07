@@ -10,6 +10,7 @@ App::App(int width, int height, const char* title)
 
 App::~App( void )
 {
+    delete dr;
     glfwTerminate();
 }
 
@@ -42,7 +43,8 @@ int App::init( void )
     // exit(1);
     dr = new Draw();
     // dr->initTriangle(vec3(-0.5f, -0.5f, 0.0f), vec3(0.5f, -0.5f, 0.0f), vec3(0.0f, 0.5f, 0.0f));
-    dr->initTwoTriangles(vec3(-0.5f, -0.5f, 0.0f), vec3(-0.5f, 0.5f, 0.0f), vec3(0.0f, -0.5f, 0.0f), vec3(0.5f, 0.5f, 0.0f), vec3(0.5f, -0.5f, 0.0f));
+    // dr->initTwoTriangles(vec3(-0.5f, -0.5f, 0.0f), vec3(-0.5f, 0.5f, 0.0f), vec3(0.0f, -0.5f, 0.0f), vec3(0.5f, 0.5f, 0.0f), vec3(0.5f, -0.5f, 0.0f));
+    dr->initTwoTrianglesDifferentBuf(vec3(-0.5f, -0.5f, 0.0f), vec3(-0.5f, 0.5f, 0.0f), vec3(0.0f, -0.5f, 0.0f), vec3(0.5f, 0.5f, 0.0f), vec3(0.5f, -0.5f, 0.0f));
     // dr->initRectangle(vec3(-0.5f, 0.5f, 0.0f), vec3(0.5f, 0.5f, 0.0f), vec3(-0.5f, -0.5f, 0.0f), vec3(0.5f, -0.5f, 0.0f));
     return (EXIT_SUCCESS);
 }
@@ -51,7 +53,8 @@ void    App::render( void )
 {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f); // Set the clear color to a nice green
     glClear(GL_COLOR_BUFFER_BIT); // Clear the screen in preparation for new drawing
-    dr->renderTriangle();
+    // dr->renderTriangle();
+    dr->renderTwoTriangles();
     // dr->renderRectangle();
     glfwSwapBuffers(window); // Swap the buffers to display what was just drawn
     glfwPollEvents(); // Look for events

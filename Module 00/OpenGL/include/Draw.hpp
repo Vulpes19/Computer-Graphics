@@ -22,14 +22,19 @@ class Draw
         void    initTriangle( vec3, vec3, vec3 );
         void    initRectangle( vec3, vec3, vec3, vec3 );
         void    initTwoTriangles( vec3, vec3, vec3, vec3, vec3 );
+        void    initTwoTrianglesDifferentBuf( vec3, vec3, vec3, vec3, vec3 );
         void    compileShaderProgram( void );
         void    renderTriangle( void );
+        void    renderTwoTriangles( void );
         void    renderRectangle( void );
     private:
         // std::vector< struct vec3 > points;
         GLuint vertexArrObj;
+        GLuint vertexArrObjs[2];
         GLuint vertexBufferObj;
+        GLuint vertexBufferObjs[2];
         GLuint elementBufferObj;
         GLuint IndexBufferObj;
-        GLuint shaderProgram;
+        GLuint shaderProgram1;
+        GLuint shaderProgram2;
 };

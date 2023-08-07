@@ -1,5 +1,5 @@
 #* TARGET *#
-TARGET = two_triangles.exe
+TARGET = two_different_triangles.exe
 
 #*SOURCE FILES *#
 FILES = main.cpp glad.cpp App.cpp Draw.cpp

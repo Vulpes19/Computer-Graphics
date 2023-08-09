@@ -47,6 +47,10 @@ int WINAPI	WinMain(
 	//register the window class
 	RegisterClassEx(&windowClass);
 
+	//window size and client size
+	RECT size = { 0, 0, 500, 400 };
+	AdjustWindowRect(&size, WS_OVERLAPPEDWINDOW, FALSE);
+
 	//create the window
 	window = CreateWindowEx(
 		NULL,
@@ -55,8 +59,8 @@ int WINAPI	WinMain(
 		WS_OVERLAPPEDWINDOW,	//window style
 		300,					//x pos of the window
 		300,					//y pos of the window
-		600,					//width of the window
-		300,					//height of the window
+		size.right - size.left,	//width of the window
+		size.bottom - size.top,	//height of the window
 		NULL,					//parent window
 		NULL,					//menus
 		hInstance,				// application handle
@@ -67,16 +71,23 @@ int WINAPI	WinMain(
 	ShowWindow(window, nShowCmd);
 
 	//this struct holds windows events
-	MSG message;
+	MSG msg = { 0 };
 
 	//main loop
-	while (GetMessage(&message, NULL, 0, 0))
+	while (TRUE)
 	{
-		//translate the message into the right format
-		TranslateMessage(&message);
+		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+		{
+			//translate the message into the right format
+			TranslateMessage(&msg);
 
-		//send the message to the WindowProc function
-		DispatchMessage(&message);
+			//send the message to the WindowProc function
+			DispatchMessage(&msg);
+			if (msg.message == WM_QUIT)
+				break;
+		}
+		else
+			continue;
 	}
-	return (0);
+	return (msg.wParam);
 }

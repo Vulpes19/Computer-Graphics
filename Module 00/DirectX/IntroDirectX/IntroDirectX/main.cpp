@@ -1,6 +1,4 @@
-#include <windows.h>
-#include <WinBase.h>
-#include <windowsx.h>
+#include "DirectX.hpp"
 
 LRESULT CALLBACK WindowProc(
 	HWND hWnd,
@@ -70,6 +68,7 @@ int WINAPI	WinMain(
 	//display window
 	ShowWindow(window, nShowCmd);
 
+	initDirect3D(window);
 	//this struct holds windows events
 	MSG msg = { 0 };
 
@@ -89,5 +88,6 @@ int WINAPI	WinMain(
 		else
 			continue;
 	}
+	clean();
 	return (msg.wParam);
 }

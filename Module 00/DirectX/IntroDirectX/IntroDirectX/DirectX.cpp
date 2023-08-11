@@ -1,10 +1,21 @@
 #include "DirectX.hpp"
 
-IDXGISwapChain* swapChain;       //pointer to swap chain interface
-ID3D11Device* device;			  //pointer to Direct3D device interface
-ID3D11DeviceContext* devContext;
+DirectXRenderer::DirectXRenderer(HWND hWnd) : hWnd(hWnd)
+{
+	width = 800;
+	height = 600;
+	initDirect3D();
+}
 
-void	initDirect3D(HWND hWnd)
+DirectXRenderer::~DirectXRenderer(void)
+{
+	swapChain->Release();
+	backBuff->Release();
+	device->Release();
+	devContext->Release();
+}
+
+void	DirectXRenderer::initDirect3D(void)
 {
 	//struct that holds information about the swap chain
 	DXGI_SWAP_CHAIN_DESC swapChainDesc;
@@ -22,7 +33,7 @@ void	initDirect3D(HWND hWnd)
 		NULL,
 		D3D_DRIVER_TYPE_HARDWARE,
 		NULL,
-		NULL,
+		D3D11_CREATE_DEVICE_DEBUG,
 		NULL,
 		NULL,
 		D3D11_SDK_VERSION,
@@ -32,12 +43,35 @@ void	initDirect3D(HWND hWnd)
 		NULL,
 		&devContext
 	);
-
+	createRenderTarget();
 }
 
-void	clean(void)
+void	DirectXRenderer::createRenderTarget(void)
 {
-	swapChain->Release();
-	device->Release();
-	devContext->Release();
+	ID3D11Texture2D* backBuffAddr;
+	swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBuffAddr);
+	device->CreateRenderTargetView(backBuffAddr, NULL, &backBuff);
+	backBuffAddr->Release();
+	devContext->OMSetRenderTargets(1, &backBuff, NULL);
+	setViewport();
+}
+
+void	DirectXRenderer::setViewport(void)
+{
+	D3D11_VIEWPORT	viewport;
+	ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
+
+	viewport.TopLeftX = 0;
+	viewport.TopLeftY = 0;
+	viewport.Width = 800;
+	viewport.Height = 600;
+
+	devContext->RSSetViewports(1, &viewport);
+}
+
+void	DirectXRenderer::render(void)
+{
+	float color[] = { 1.0f, 0.5f, 0.0f, 1.0f };
+	devContext->ClearRenderTargetView(backBuff, color);
+	swapChain->Present(0, 0);
 }

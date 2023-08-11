@@ -46,7 +46,7 @@ int WINAPI	WinMain(
 	RegisterClassEx(&windowClass);
 
 	//window size and client size
-	RECT size = { 0, 0, 500, 400 };
+	RECT size = { 0, 0, 800, 600 };
 	AdjustWindowRect(&size, WS_OVERLAPPEDWINDOW, FALSE);
 
 	//create the window
@@ -68,7 +68,7 @@ int WINAPI	WinMain(
 	//display window
 	ShowWindow(window, nShowCmd);
 
-	initDirect3D(window);
+	DirectXRenderer wnd(window);
 	//this struct holds windows events
 	MSG msg = { 0 };
 
@@ -86,8 +86,9 @@ int WINAPI	WinMain(
 				break;
 		}
 		else
-			continue;
+		{
+			wnd.render();
+		}
 	}
-	clean();
 	return (msg.wParam);
 }

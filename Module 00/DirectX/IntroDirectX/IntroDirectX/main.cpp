@@ -1,4 +1,5 @@
 #include "DirectX.hpp"
+#include <string>
 
 LRESULT CALLBACK WindowProc(
 	HWND hWnd,
@@ -71,24 +72,38 @@ int WINAPI	WinMain(
 	DirectXRenderer wnd(window);
 	//this struct holds windows events
 	MSG msg = { 0 };
-
-	//main loop
-	while (TRUE)
+	try
 	{
-		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+		//main loop
+		while (TRUE)
 		{
-			//translate the message into the right format
-			TranslateMessage(&msg);
+			if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+			{
+				//translate the message into the right format
+				TranslateMessage(&msg);
 
-			//send the message to the WindowProc function
-			DispatchMessage(&msg);
-			if (msg.message == WM_QUIT)
-				break;
-		}
-		else
-		{
-			wnd.render();
+				//send the message to the WindowProc function
+				DispatchMessage(&msg);
+				if (msg.message == WM_QUIT)
+					break;
+			}
+			else
+			{
+				wnd.render();
+			}
 		}
 	}
+	catch (const DirectXexcp &e)
+	{
+		OutputDebugStringA(e.what());
+		OutputDebugStringA("\n");
+		OutputDebugStringA("In file: ");
+		OutputDebugStringA(e.GetFile());
+		OutputDebugStringA("\n");
+		OutputDebugStringA("In line: ");
+		OutputDebugStringA(std::to_string(e.getLine()).c_str());
+		OutputDebugStringA("\n");
+	}
+
 	return (msg.wParam);
 }

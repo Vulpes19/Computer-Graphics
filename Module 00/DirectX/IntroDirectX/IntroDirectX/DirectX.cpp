@@ -29,7 +29,7 @@ void	DirectXRenderer::initDirect3D(void)
 	swapChainDesc.SampleDesc.Count = 4;                             //how many multisamples
 	swapChainDesc.Windowed = TRUE;                                  //windowed/full-screen mode
 
-	D3D11CreateDeviceAndSwapChain(
+	HRESULT res = D3D11CreateDeviceAndSwapChain(
 		NULL,
 		D3D_DRIVER_TYPE_HARDWARE,
 		NULL,
@@ -43,14 +43,29 @@ void	DirectXRenderer::initDirect3D(void)
 		NULL,
 		&devContext
 	);
+
+	if (FAILED(res))
+	{
+		throw(DirectXexcp(res, __FILE__, __LINE__));
+	}
 	createRenderTarget();
 }
 
 void	DirectXRenderer::createRenderTarget(void)
 {
 	ID3D11Texture2D* backBuffAddr;
-	swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBuffAddr);
-	device->CreateRenderTargetView(backBuffAddr, NULL, &backBuff);
+	HRESULT	res;
+	
+	res = swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBuffAddr);
+	if (FAILED(res))
+	{
+		throw(DirectXexcp(res, __FILE__, __LINE__));
+	}
+	res = device->CreateRenderTargetView(backBuffAddr, NULL, &backBuff);
+	if (FAILED(res))
+	{
+		throw(DirectXexcp(res, __FILE__, __LINE__));
+	}
 	backBuffAddr->Release();
 	devContext->OMSetRenderTargets(1, &backBuff, NULL);
 	setViewport();
@@ -73,5 +88,9 @@ void	DirectXRenderer::render(void)
 {
 	float color[] = { 1.0f, 0.5f, 0.0f, 1.0f };
 	devContext->ClearRenderTargetView(backBuff, color);
-	swapChain->Present(0, 0);
+	HRESULT res = swapChain->Present(0, 0);
+	if (FAILED(res))
+	{
+		throw(DirectXexcp(res, __FILE__, __LINE__));
+	}
 }

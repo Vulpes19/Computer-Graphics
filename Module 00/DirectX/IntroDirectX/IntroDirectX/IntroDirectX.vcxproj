@@ -149,9 +149,11 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="DirectX.cpp" />
+    <ClCompile Include="ErrorHandling.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectX.hpp" />
+    <ClInclude Include="ErrorHandling.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -6,6 +6,13 @@ App::App( int width, int height, const char *title )
     this->height = height;
     this->title = title;
     this->window = NULL;
+    std::vector<Point> points;
+    points.push_back(Point(-0.5f, 0.5f, 0.0f));
+    points.push_back(Point(0.5f, -0.5f, 0.0f));
+    points.push_back(Point(0.0f, 0.5f, 0.0f));
+    Vector pos(2.0f, 2.0f);
+    Vector vel(2.0f, 2.0f);
+    this->player = new Player(pos, vel, points);
 }
 
 App::~App( void )

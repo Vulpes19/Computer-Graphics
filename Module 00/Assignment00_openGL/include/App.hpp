@@ -3,6 +3,8 @@
 #include <iostream>
 #include <glad.h>
 #include <glfw3.h>
+#include "InputHandler.hpp"
+#include "Player.hpp"
 
 class App
 {
@@ -17,4 +19,5 @@ class App
         int width;
         int height;
         const char* title;
+        GameObject  *player;
 };

@@ -3,8 +3,32 @@
 GameObject::GameObject( void )
 {}
 
-GameObject::GameObject( Vector &position, Vector &velocity ) : position(position), velocity(velocity)
-{}
+GameObject::GameObject( Vector position, Vector velocity, std::vector<Point> &points ) : position(position), velocity(velocity), points(points)
+{
+    GLuint vertexBufferObj;
+    GLuint elementBufferObj;
+    compileShaderProgram();
+    for ( size_t i = 0, j = 0; i < 12 && j < points.size(); i += 3, j++ )
+    {
+        vertices[i] = points[j].x;
+        vertices[i + 1] = points[j].y;
+        vertices[i + 2] = points[j].z;
+    }
+    unsigned int indices[] = {
+        0, 2, 3,
+        0, 1, 3
+    };
+    glGenVertexArrays(1, &vertexArrObj);
+    glGenBuffers(1, &vertexBufferObj);
+    glGenBuffers(1, &elementBufferObj);
+    glBindVertexArray(vertexArrObj);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObj);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferObj);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0 );
+    glEnableVertexAttribArray(0);
+}
 
 GameObject::~GameObject( void )
 {}

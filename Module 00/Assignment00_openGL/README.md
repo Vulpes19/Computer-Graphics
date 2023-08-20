@@ -1,4 +1,4 @@
-Module 1 Project Assignment:
+#Module 1 Project Assignment:
 
 OpenGL Project: Implementing 2D Game Movement and Collision Detection
 

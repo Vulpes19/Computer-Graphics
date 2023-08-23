@@ -34,9 +34,7 @@ class GameObject
         Vector  velocity;
         std::vector<Point> points;
         float   vertices[12];
-        GLuint  vertexArrObj = 0;
-        GLuint vertexBufferObj = 0;
-        GLuint elementBufferObj = 0;
+        GLuint  vertexArrObj;
         GLuint  shaderProgram;
         const char  *vertexShPath;
         const char  *fragmentShPath;

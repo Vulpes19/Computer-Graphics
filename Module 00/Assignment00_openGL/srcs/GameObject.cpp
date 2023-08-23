@@ -14,6 +14,8 @@ GameObject::~GameObject( void )
 
 void GameObject::init( void )
 {
+    GLuint vertexBufferObj = 0;
+    GLuint elementBufferObj = 0;
     compileShaderProgram();
     for ( size_t i = 0, j = 0; i < 12 && j < points.size(); i += 3, j++ )
     {

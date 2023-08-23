@@ -12,38 +12,43 @@ Player::~Player( void )
 
 bool    Player::handleMovement( void )
 {
+    // NormalizedCoordinate = (2 * ScreenCoordinate) / WindowSize - 1
+    float normalizedTopBorder = 1.15f;
+    float normalizedBottomBorder = -1.15f;
+    float normalizedLeftBorder = -1.15f;
+    float normalizedRightBorder = 1.15f;
+    int     directionX = 0;
+    int     directionY = 0;
+
+
     if ( InputHandler::getInstance()->isKeyPressed(GLFW_KEY_W) )
-    {
-        for ( auto i = 1; i < 12; i += 3 )
-        {
-            std::cout << vertices[i] << " " << HEIGHT << std::endl;
-            if ( vertices[i] < HEIGHT )
-                vertices[i] += moveSpeed;
-        }
-        return (true);
-    }
+        directionY = 1;
     if ( InputHandler::getInstance()->isKeyPressed(GLFW_KEY_S) )
-    {
-        for ( auto i = 1; i < 12; i += 3 )
-        {
-            std::cout << vertices[i] << " " << WIDTH << std::endl;
-            vertices[i] -= moveSpeed;
-        }
-        return (true);
-    }
+        directionY = -1;
     if ( InputHandler::getInstance()->isKeyPressed(GLFW_KEY_A) )
-    {
-        for ( auto i = 0; i < 12; i += 3 )
-            vertices[i] -= moveSpeed;
-        return (true);
-    }
+        directionX = -1;
     if ( InputHandler::getInstance()->isKeyPressed(GLFW_KEY_D) )
+        directionX = 1;
+    if ( directionX == 0 && directionY == 0 )
+        return (false);
+    for ( auto i = 0; i < 12; i += 3 )
     {
-        for ( auto i = 0; i < 12; i += 3 )
-            vertices[i] += moveSpeed;
-        return (true);
+        float posX = vertices[i] + moveSpeed * directionX;
+        float posY = vertices[i + 1] + moveSpeed * directionY;
+        if ( posX > normalizedRightBorder || posX < normalizedLeftBorder ||
+            posY > normalizedTopBorder || posY < normalizedBottomBorder )
+        {
+            std::cout << normalizedLeftBorder << " " << posX << " " << normalizedRightBorder << std::endl;
+            std::cout << normalizedTopBorder << " " << posY << " " << normalizedBottomBorder << std::endl;
+            return ( false );
+        }
     }
-    return (false);
+    for ( auto i = 0; i < 12; i += 3 )
+    {
+        vertices[i] += moveSpeed * directionX;
+        vertices[i + 1] += moveSpeed * directionY;
+    }
+    return (true);
 }
 
 void    Player::update( void )

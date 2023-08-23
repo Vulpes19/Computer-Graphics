@@ -51,10 +51,7 @@ std::string GameObject::loadShaderFromFile( enum SHADER sh )
 {
     std::ifstream file;
     if ( sh == VERTEX )
-    {
-        std::cout << vertexShPath << std::endl;
         file.open(vertexShPath);
-    }
     else
         file.open(fragmentShPath);
     if ( !file.is_open() )
@@ -78,7 +75,6 @@ void    GameObject::compileShaderProgram( void )
         std::cerr << "error loading fragment shader from file" << std::endl;
         // return ;
     }
-    std::cout << cnstfragmentShader << std::endl;
     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &cnstVertexShader, nullptr);
     glCompileShader(vertexShader);

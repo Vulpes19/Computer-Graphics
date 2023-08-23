@@ -53,6 +53,21 @@ bool    Player::handleMovement( void )
 
 void    Player::update( void )
 {
+    if ( vertexBufferObj != 0 )
+    {
+        glDeleteBuffers(1, &vertexBufferObj);
+        vertexBufferObj = 0;
+    }
+    if ( elementBufferObj != 0 )
+    {
+        glDeleteBuffers(1, &elementBufferObj);
+        elementBufferObj = 0;
+    }
+    if (vertexArrObj != 0)
+    {
+        glDeleteVertexArrays(1, &vertexArrObj);
+        vertexArrObj = 0;
+    }
     GLuint vertexBufferObj = 0;
     GLuint elementBufferObj = 0;
     unsigned int indices[] = {

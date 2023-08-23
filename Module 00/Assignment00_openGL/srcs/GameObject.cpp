@@ -3,10 +3,19 @@
 GameObject::GameObject( void )
 {}
 
-GameObject::GameObject( Vector position, Vector velocity, std::vector<Point> &points ) : position(position), velocity(velocity), points(points)
+GameObject::GameObject( Vector position, Vector velocity, std::vector<Point> &points, const char *vShader, const char *fShader ) : position(position), velocity(velocity), points(points), vertexShPath(vShader), fragmentShPath(fShader)
 {
-    GLuint vertexBufferObj;
-    GLuint elementBufferObj;
+    this->vertexArrObj = 0;
+    this->shaderProgram = 0;
+}
+
+GameObject::~GameObject( void )
+{}
+
+void GameObject::init( void )
+{
+    GLuint vertexBufferObj = 0;
+    GLuint elementBufferObj = 0;
     compileShaderProgram();
     for ( size_t i = 0, j = 0; i < 12 && j < points.size(); i += 3, j++ )
     {
@@ -30,9 +39,6 @@ GameObject::GameObject( Vector position, Vector velocity, std::vector<Point> &po
     glEnableVertexAttribArray(0);
 }
 
-GameObject::~GameObject( void )
-{}
-
 void    GameObject::draw( void )
 {
     glUseProgram( shaderProgram );
@@ -41,13 +47,40 @@ void    GameObject::draw( void )
     glBindVertexArray(0);
 }
 
+std::string GameObject::loadShaderFromFile( enum SHADER sh )
+{
+    std::ifstream file;
+    if ( sh == VERTEX )
+    {
+        std::cout << vertexShPath << std::endl;
+        file.open(vertexShPath);
+    }
+    else
+        file.open(fragmentShPath);
+    if ( !file.is_open() )
+        return ("NONE");
+    std::string shader( (std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>() );
+    return (shader);
+}
+
 void    GameObject::compileShaderProgram( void )
 {
-    const char *vertexShaderStr = loadShaderFromFile( VERTEX );
-    const char *fragmentShaderStr = loadShaderFromFile( FRAGMENT );
-
+    std::string vertexShaderStr = loadShaderFromFile( VERTEX );
+    std::string fragmentShaderStr = loadShaderFromFile( FRAGMENT );
+    const char *cnstVertexShader = vertexShaderStr.c_str();
+    const char *cnstfragmentShader = fragmentShaderStr.c_str();
+    if ( vertexShaderStr == "NONE" )
+    {
+        std::cerr << "error loading vertex shader from file" << std::endl;
+    }
+    if ( fragmentShaderStr == "NONE" )
+    {
+        std::cerr << "error loading fragment shader from file" << std::endl;
+        // return ;
+    }
+    std::cout << cnstfragmentShader << std::endl;
     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderStr, nullptr);
+    glShaderSource(vertexShader, 1, &cnstVertexShader, nullptr);
     glCompileShader(vertexShader);
     
     int success;
@@ -60,12 +93,13 @@ void    GameObject::compileShaderProgram( void )
     }
 
     GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource( fragmentShader, 1, &fragmentShaderStr, nullptr );
+    glShaderSource( fragmentShader, 1, &cnstfragmentShader, NULL );
+    glCompileShader(fragmentShader);
     glGetShaderiv( fragmentShader, GL_COMPILE_STATUS, &success );
     if ( !success )
     {
         char infoLog[512];
-        glGetShaderInfoLog( vertexShader, 512, NULL, infoLog );
+        glGetShaderInfoLog( fragmentShader, 512, NULL, infoLog );
         std::cerr << "Error: fragment shader compilation failed\n" << infoLog << std::endl;
     }
     shaderProgram = glCreateProgram();
@@ -77,7 +111,7 @@ void    GameObject::compileShaderProgram( void )
     if ( !success )
     {
         char infoLog[512];
-        glGetProgramInfoLog( success, 512, NULL, infoLog );
+        glGetProgramInfoLog( shaderProgram, 512, NULL, infoLog );
         std::cerr << "Error: shader program linking failed\n" << infoLog << std::endl;
     }
     glDeleteShader(vertexShader);

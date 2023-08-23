@@ -1,5 +1,7 @@
 #include "InputHandler.hpp"
 
+InputHandler *InputHandler::instancePtr = nullptr;
+
 InputHandler::InputHandler( void )
 {}
 
@@ -13,7 +15,10 @@ InputHandler *InputHandler::getInstance( void )
 bool    InputHandler::isKeyPressed( int key )
 {
     if ( keyStates[key] == GLFW_PRESS )
+    {
+        keyStates[key] = GLFW_RELEASE;
         return (true);
+    }
     else
         return (false);
 }
@@ -21,5 +26,10 @@ bool    InputHandler::isKeyPressed( int key )
 void    InputHandler::keyCallBack(GLFWwindow *, int key, int, int action, int )
 {
     if  ( action == GLFW_PRESS )
-        keyStates[key] = action;
+        InputHandler::getInstance()->setKeyState(key, action);
+}
+
+void    InputHandler::setKeyState( int key, int action )
+{
+    keyStates[key] = action;
 }

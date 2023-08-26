@@ -2,7 +2,7 @@
 TARGET = project00.exe
 
 #*SOURCE FILES *#
-FILES = main.cpp glad.cpp App.cpp GameObject.cpp InputHandler.cpp Player.cpp
+FILES = main.cpp glad.cpp App.cpp GameObject.cpp InputHandler.cpp Player.cpp Obstacle.cpp
 		
 SRC = $(addprefix srcs/, $(FILES))
 

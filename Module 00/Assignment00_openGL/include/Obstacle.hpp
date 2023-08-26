@@ -3,6 +3,10 @@
 class Obstacle : public GameObject
 {
     public:
-        Obstacle( void ) : GameObject( Vector(2f, 2f), Vector(2f, 2f) ) {};
+        Obstacle( std::vector<Point>, const char *, const char * );
         virtual ~Obstacle( void );
+        void            update( void ) override;
+        bool            deadObstacle( void ) const override;
+    private:
+        bool    isDead = false;
 };

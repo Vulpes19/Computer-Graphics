@@ -13,29 +13,32 @@
 
 enum SHADER
 {
-    VERTEX,
-    FRAGMENT
+	VERTEX,
+	FRAGMENT
 };
 
 class GameObject
 {
-    public:
-        GameObject( void );
-        GameObject( Vector, Vector, std::vector<Point> &, const char *, const char * );
-        virtual ~GameObject( void );
-        std::string loadShaderFromFile( enum SHADER );
-        void    init( void );
-        void    compileShaderProgram( void );
-        virtual void    draw( void );
-        virtual bool    handleMovement( void ) { return (false); };
-        virtual void    update( void ) {};
-    protected:
-        Vector  position;
-        Vector  velocity;
-        std::vector<Point> points;
-        float   vertices[12];
-        GLuint  vertexArrObj;
-        GLuint  shaderProgram;
-        const char  *vertexShPath;
-        const char  *fragmentShPath;
+	public:
+		GameObject( void );
+		GameObject( std::vector<Point> &, const char *, const char * );
+		virtual ~GameObject( void );
+		std::string		loadShaderFromFile( enum SHADER );
+		void			init( void );
+		void			compileShaderProgram( void );
+		virtual void    draw( void );
+		virtual bool    handleMovement( void ) { return (false); };
+		virtual void    update( void ) {};
+        virtual	bool    deadObstacle( void ) const { return (false); };
+	protected:
+		std::vector<Point>	points;
+		float   			vertices[12];
+		float				moveSpeed;
+		GLuint				vertexArrObj = 0;
+		GLuint				shaderProgram = 0;
+		GLuint				vertexBufferObj = 0;
+    	GLuint				elementBufferObj = 0;
+		const char			*vertexShPath;
+		const char			*fragmentShPath;
+        // bool    isDead = false;
 };

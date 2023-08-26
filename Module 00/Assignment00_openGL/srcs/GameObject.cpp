@@ -3,19 +3,21 @@
 GameObject::GameObject( void )
 {}
 
-GameObject::GameObject( Vector position, Vector velocity, std::vector<Point> &points, const char *vShader, const char *fShader ) : position(position), velocity(velocity), points(points), vertexShPath(vShader), fragmentShPath(fShader)
+GameObject::GameObject( std::vector<Point> &points, const char *vShader, const char *fShader ) : points(points), vertexShPath(vShader), fragmentShPath(fShader)
 {
     this->vertexArrObj = 0;
     this->shaderProgram = 0;
 }
 
 GameObject::~GameObject( void )
-{}
+{
+    glDeleteBuffers(1, &vertexBufferObj);
+    glDeleteBuffers(1, &elementBufferObj);
+    glDeleteProgram(shaderProgram);
+}
 
 void GameObject::init( void )
 {
-    GLuint vertexBufferObj = 0;
-    GLuint elementBufferObj = 0;
     compileShaderProgram();
     for ( size_t i = 0, j = 0; i < 12 && j < points.size(); i += 3, j++ )
     {
@@ -71,10 +73,7 @@ void    GameObject::compileShaderProgram( void )
         std::cerr << "error loading vertex shader from file" << std::endl;
     }
     if ( fragmentShaderStr == "NONE" )
-    {
         std::cerr << "error loading fragment shader from file" << std::endl;
-        // return ;
-    }
     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &cnstVertexShader, nullptr);
     glCompileShader(vertexShader);

@@ -25,7 +25,7 @@ bool    InputHandler::isKeyPressed( int key )
 
 void    InputHandler::keyCallBack(GLFWwindow *, int key, int, int action, int )
 {
-    if  ( action == GLFW_PRESS )
+    // if  ( action == GLFW_PRESS )
         InputHandler::getInstance()->setKeyState(key, action);
 }
 

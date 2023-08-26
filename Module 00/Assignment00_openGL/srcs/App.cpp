@@ -7,13 +7,14 @@ App::App( int width, int height, const char *title )
     this->title = title;
     this->window = NULL;
     std::vector<Point> points;
-    points.push_back(Point(-0.5f, 0.5f, 0.0f));
-    points.push_back(Point(0.5f, 0.5f, 0.0f));
-    points.push_back(Point(-0.5f, -0.5f, 0.0f));
-    points.push_back(Point(0.5f, -0.5f, 0.0f));
+    points.push_back(Point(-0.2f, 0.2f, 0.0f));
+    points.push_back(Point(0.2f, 0.2f, 0.0f));
+    points.push_back(Point(-0.2f, -0.2f, 0.0f));
+    points.push_back(Point(0.2f, -0.2f, 0.0f));
     Vector pos(2.0f, 2.0f);
     Vector vel(2.0f, 2.0f);
-    this->player = new Player(pos, vel, points, "srcs/vertexShader.glsl", "srcs/plFragmentShader.glsl");
+    this->player = new Player(points, "srcs/vertexShader.glsl", "srcs/plFragmentShader.glsl");
+    generateObstacles();
 }
 
 App::~App( void )
@@ -48,18 +49,62 @@ int App::init( void )
     glViewport( 0, 0, width, height );
     glfwSetKeyCallback(window, InputHandler::keyCallBack);
     player->init();
+    for ( auto obstacle : obstacles )
+        obstacle->init();
+    start = time_clock::now();
     return (EXIT_SUCCESS);
 }
 
 void    App::render( void )
 {
+    glfwPollEvents();
     glClearColor( 0.2f, 0.3f, 0.3f, 1.0f );
     glClear( GL_COLOR_BUFFER_BIT );
     player->draw();
+    auto it = std::remove_if( obstacles.begin(), obstacles.end(), []( const GameObject *obstacle) {
+        if ( obstacle->deadObstacle() )
+        {
+            std::cout << "ERASED\n";
+            return (true);
+        }
+        return (false);
+    });
+    obstacles.erase(it, obstacles.end());
+    std::for_each( obstacles.begin(), obstacles.end(), []( GameObject *obstalce){
+        obstalce->draw();
+    });
     glfwSwapBuffers( window );
-    glfwPollEvents();
+    end = time_clock::now();
+    std::chrono::duration<double> elapsed = std::chrono::duration_cast<std::chrono::duration<double>>(end - start);
     if ( player->handleMovement() )
         player->update();
+    if ( elapsed.count() >= 2.0 )
+    {
+        for ( auto obstacle : obstacles )
+            obstacle->update();
+        start = time_clock::now();
+    }
+}
+
+void    App::generateObstacles( void )
+{
+    std::random_device random;
+    std::mt19937 gen(random());
+    float minX = -1.05f;
+    float maxX = 1.05f; 
+    float maxY = 1.05f;
+    
+    std::uniform_real_distribution<float> distribution(minX, maxX);
+    for ( auto i = 0; i < 3; i++ )
+    {
+        float randomX = distribution( gen );
+        std::vector<Point> points;
+        points.push_back(Point(randomX, maxY, 0.0f));
+        points.push_back(Point(randomX + 0.15f, maxY, 0.0f));
+        points.push_back(Point(randomX, maxY - 0.25f, 0.0f));
+        points.push_back(Point(randomX + 0.15f, maxY - 0.25f, 0.0f));
+        obstacles.push_back( new Obstacle(points, "srcs/vertexShader.glsl", "srcs/obFragmentShader.glsl") );
+    }
 }
 
 GLFWwindow* App::getWindow( void ) const

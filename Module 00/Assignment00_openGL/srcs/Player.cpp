@@ -2,9 +2,9 @@
 #include <fstream>
 #include <string>
 
- Player::Player( Vector position, Vector velocity, std::vector<Point> &points, const char *vShader, const char *fShader ) : GameObject( position, velocity, points, vShader, fShader )
+ Player::Player( std::vector<Point> &points, const char *vShader, const char *fShader ) : GameObject( points, vShader, fShader )
  {
-    moveSpeed = 0.2f;
+    moveSpeed = 0.1f;
  }
        
 Player::~Player( void )
@@ -13,10 +13,10 @@ Player::~Player( void )
 bool    Player::handleMovement( void )
 {
     // NormalizedCoordinate = (2 * ScreenCoordinate) / WindowSize - 1
-    float normalizedTopBorder = 1.15f;
-    float normalizedBottomBorder = -1.15f;
-    float normalizedLeftBorder = -1.15f;
-    float normalizedRightBorder = 1.15f;
+    float normalizedTopBorder = 1.05f;
+    float normalizedBottomBorder = -1.05f;
+    float normalizedLeftBorder = -1.05f;
+    float normalizedRightBorder = 1.05f;
     int     directionX = 0;
     int     directionY = 0;
 
@@ -53,8 +53,21 @@ bool    Player::handleMovement( void )
 
 void    Player::update( void )
 {
-    GLuint vertexBufferObj = 0;
-    GLuint elementBufferObj = 0;
+    if ( vertexBufferObj != 0 )
+    {
+        glDeleteBuffers(1, &vertexBufferObj);
+        vertexBufferObj = 0;
+    }
+    if ( elementBufferObj != 0 )
+    {
+        glDeleteBuffers(1, &elementBufferObj);
+        elementBufferObj = 0;
+    }
+    if (vertexArrObj != 0)
+    {
+        glDeleteVertexArrays(1, &vertexArrObj);
+        vertexArrObj = 0;
+    }
     unsigned int indices[] = {
         0, 2, 3,
         0, 1, 3

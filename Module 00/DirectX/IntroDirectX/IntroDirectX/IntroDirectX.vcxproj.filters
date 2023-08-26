@@ -2,11 +2,21 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="DirectX.cpp" />
+    <ClCompile Include="DirectXRenderer.cpp" />
     <ClCompile Include="ErrorHandling.cpp" />
+    <ClCompile Include="Shape.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DirectX.hpp" />
+    <ClInclude Include="DirectXRenderer.hpp" />
     <ClInclude Include="ErrorHandling.hpp" />
+    <ClInclude Include="Shape.hpp" />
+    <ClInclude Include="DirectX.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="VertexShader.hlsl" />
+    <FxCompile Include="PixelShader.hlsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders.shader" />
   </ItemGroup>
 </Project>

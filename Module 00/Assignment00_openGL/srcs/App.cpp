@@ -19,6 +19,7 @@ App::App( int width, int height, const char *title )
 
 App::~App( void )
 {
+    glfwDestroyWindow(window);
     glfwTerminate();
 }
 
@@ -64,12 +65,18 @@ void    App::render( void )
     auto it = std::remove_if( obstacles.begin(), obstacles.end(), []( const GameObject *obstacle) {
         if ( obstacle->deadObstacle() )
         {
-            std::cout << "ERASED\n";
+            delete obstacle;
             return (true);
         }
         return (false);
     });
     obstacles.erase(it, obstacles.end());
+    if ( obstacles.empty() )
+    {
+        generateObstacles();
+        for ( auto obstacle : obstacles )
+            obstacle->init();
+    }
     std::for_each( obstacles.begin(), obstacles.end(), []( GameObject *obstalce){
         obstalce->draw();
     });
@@ -78,7 +85,7 @@ void    App::render( void )
     std::chrono::duration<double> elapsed = std::chrono::duration_cast<std::chrono::duration<double>>(end - start);
     if ( player->handleMovement() )
         player->update();
-    if ( elapsed.count() >= 2.0 )
+    if ( elapsed.count() >= 1.0 )
     {
         for ( auto obstacle : obstacles )
             obstacle->update();
@@ -94,15 +101,17 @@ void    App::generateObstacles( void )
     float maxX = 1.05f; 
     float maxY = 1.05f;
     
-    std::uniform_real_distribution<float> distribution(minX, maxX);
+    std::uniform_real_distribution<float> distributionX(minX, maxX);
+    std::uniform_real_distribution<float> distributionY(maxY, maxY -0.25f);
     for ( auto i = 0; i < 3; i++ )
     {
-        float randomX = distribution( gen );
+        float randomX = distributionX( gen );
+        float randomY = distributionY( gen );
         std::vector<Point> points;
-        points.push_back(Point(randomX, maxY, 0.0f));
-        points.push_back(Point(randomX + 0.15f, maxY, 0.0f));
-        points.push_back(Point(randomX, maxY - 0.25f, 0.0f));
-        points.push_back(Point(randomX + 0.15f, maxY - 0.25f, 0.0f));
+        points.push_back(Point(randomX, randomY, 0.0f));
+        points.push_back(Point(randomX + 0.15f, randomY, 0.0f));
+        points.push_back(Point(randomX, randomY - 0.25f, 0.0f));
+        points.push_back(Point(randomX + 0.15f, randomY - 0.25f, 0.0f));
         obstacles.push_back( new Obstacle(points, "srcs/vertexShader.glsl", "srcs/obFragmentShader.glsl") );
     }
 }

@@ -6,7 +6,9 @@ Obstacle::Obstacle( std::vector<Point> points, const char *vShader, const char *
 };
 
 Obstacle::~Obstacle( void )
-{}
+{
+    std::cout << "pskch" << std::endl;
+}
 
 void    Obstacle::update( void )
 {
@@ -14,10 +16,7 @@ void    Obstacle::update( void )
     for ( auto i = 1; i < 12; i += 3 )
     {
         if ( vertices[i] <= normalizedBottomBorder )
-        {
-            std::cout << "pss\n";
             isDead = true;
-        }
         vertices[i] -= 0.1f;
     }
     if ( vertexBufferObj != 0 )

@@ -10,7 +10,7 @@ App::App(int width, int height, const char* title)
 
 App::~App( void )
 {
-    delete dr;
+    delete dr;          
     glfwTerminate();
 }
 
@@ -42,8 +42,8 @@ int App::init( void )
     glViewport(0, 0, width, height);
     // exit(1);
     dr = new Draw();
-    // dr->initTriangle(vec3(-0.5f, -0.5f, 0.0f), vec3(0.5f, -0.5f, 0.0f), vec3(0.0f, 0.5f, 0.0f));
-    dr->initTwoTriangles(vec3(-0.5f, -0.5f, 0.0f), vec3(-0.5f, 0.5f, 0.0f), vec3(0.0f, -0.5f, 0.0f), vec3(0.5f, 0.5f, 0.0f), vec3(0.5f, -0.5f, 0.0f));
+    dr->initTriangle(vec3(-0.5f, -0.5f, 0.0f), vec3(0.5f, -0.5f, 0.0f), vec3(0.0f, 0.5f, 0.0f));
+    // dr->initTwoTriangles(vec3(-0.5f, -0.5f, 0.0f), vec3(-0.5f, 0.5f, 0.0f), vec3(0.0f, -0.5f, 0.0f), vec3(0.5f, 0.5f, 0.0f), vec3(0.5f, -0.5f, 0.0f));
     // dr->initTwoTrianglesDifferentBuf(vec3(-0.5f, -0.5f, 0.0f), vec3(-0.5f, 0.5f, 0.0f), vec3(0.0f, -0.5f, 0.0f), vec3(0.5f, 0.5f, 0.0f), vec3(0.5f, -0.5f, 0.0f));
     // dr->initRectangle(vec3(-0.5f, 0.5f, 0.0f), vec3(0.5f, 0.5f, 0.0f), vec3(-0.5f, -0.5f, 0.0f), vec3(0.5f, -0.5f, 0.0f));
     return (EXIT_SUCCESS);

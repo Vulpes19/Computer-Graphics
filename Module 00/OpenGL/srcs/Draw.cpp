@@ -16,11 +16,15 @@ Draw::~Draw( void )
 void    Draw::initTriangle( vec3 p1, vec3 p2, vec3 p3 )
 {
     compileShaderProgram();
-    float vertices[] = {
-        p1.x, p1.y, p1.z,
-        p2.x, p2.y, p2.z,
-        p3.x, p3.y, p3.z
-    };
+    vertices[0] = p1.x;
+    vertices[0] = p1.y;
+    vertices[0] = p1.z;
+    vertices[1] = p2.x;
+    vertices[1] = p2.y;
+    vertices[1] = p2.z;
+    vertices[2] = p3.x;
+    vertices[2] = p3.y;
+    vertices[2] = p3.z;
     //generating a vertex buffer object that can store a large
     //number of vertices in the GPU's memory
     glGenVertexArrays(1, &vertexArrObj);

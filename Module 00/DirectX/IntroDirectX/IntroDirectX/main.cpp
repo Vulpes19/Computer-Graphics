@@ -1,4 +1,4 @@
-#include "DirectX.hpp"
+#include "DirectXRenderer.hpp"
 #include <string>
 
 LRESULT CALLBACK WindowProc(

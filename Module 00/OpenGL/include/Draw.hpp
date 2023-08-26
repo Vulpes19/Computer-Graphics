@@ -29,6 +29,7 @@ class Draw
         void    renderRectangle( void );
     private:
         // std::vector< struct vec3 > points;
+        float vertices[9];
         GLuint vertexArrObj;
         GLuint vertexArrObjs[2];
         GLuint vertexBufferObj;

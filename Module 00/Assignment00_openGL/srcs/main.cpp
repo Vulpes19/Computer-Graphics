@@ -2,7 +2,7 @@
 
 int main( void )
 {
-    App game(800, 600, "LearnOpenGL");
+    App game(800, 600, "assignment00-OpenGL");
 
      game.init();
     while ( glfwWindowShouldClose(game.getWindow()) == GLFW_FALSE )

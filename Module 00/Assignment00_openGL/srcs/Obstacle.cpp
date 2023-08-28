@@ -6,9 +6,7 @@ Obstacle::Obstacle( std::vector<Point> points, const char *vShader, const char *
 };
 
 Obstacle::~Obstacle( void )
-{
-    std::cout << "pskch" << std::endl;
-}
+{}
 
 void    Obstacle::update( void )
 {

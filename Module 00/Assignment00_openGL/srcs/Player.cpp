@@ -38,13 +38,13 @@ bool    Player::handleMovement( void )
         if ( posX > normalizedRightBorder || posX < normalizedLeftBorder ||
             posY > normalizedTopBorder || posY < normalizedBottomBorder )
         {
-            std::cout << normalizedLeftBorder << " " << posX << " " << normalizedRightBorder << std::endl;
-            std::cout << normalizedTopBorder << " " << posY << " " << normalizedBottomBorder << std::endl;
+            // std::cout << normalizedTopBorder << " " << posY << " " << normalizedBottomBorder << std::endl;
             return ( false );
         }
     }
     for ( auto i = 0; i < 12; i += 3 )
     {
+        std::cout << vertices[i] << " " << vertices[i + 1] << " " << vertices[i + 2] << std::endl;
         vertices[i] += moveSpeed * directionX;
         vertices[i + 1] += moveSpeed * directionY;
     }

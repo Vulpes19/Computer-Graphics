@@ -11,8 +11,6 @@ GameObject::GameObject( std::vector<Point> &points, const char *vShader, const c
 
 GameObject::~GameObject( void )
 {
-    std::cout << "pskch" << std::endl;
-
     glDeleteBuffers(1, &vertexBufferObj);
     glDeleteBuffers(1, &elementBufferObj);
     glDeleteProgram(shaderProgram);

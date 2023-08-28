@@ -26,8 +26,8 @@ class App
 		int							width;
 		int							height;
 		const char					*title;
-		GameObject					*player;
-		std::vector<GameObject *>	obstacles;
+		std::unique_ptr<GameObject>	player;
+		std::vector<std::unique_ptr<GameObject>>	obstacles;
 		time_clock::time_point start;
 		time_clock::time_point end;
 };

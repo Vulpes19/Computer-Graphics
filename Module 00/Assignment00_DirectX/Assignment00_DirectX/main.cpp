@@ -1,4 +1,5 @@
 #include "DirectX.hpp"
+#include "DirectXRenderer.hpp"
 
 LRESULT	CALLBACK	WindowProc(
 	HWND hWnd,
@@ -59,6 +60,7 @@ int	WINAPI	WinMain(
 	);
 	ShowWindow(window, nShowCmd);
 	MSG msg = { 0 };
+	DirectXRenderer App(window);
 
 	while (TRUE)
 	{
@@ -69,6 +71,8 @@ int	WINAPI	WinMain(
 			if (msg.message == WM_QUIT)
 				break;
 		}
+		else
+			App.render();
 	}
 	return (msg.wParam);
 }

@@ -1,7 +1,10 @@
 #include "GameObject.hpp"
 
 GameObject::GameObject(std::vector<Vertex> points) : points(points)
-{}
+{
+	//loadShaders();
+	//createVertices();
+}
 
 GameObject::~GameObject(void)
 {}
@@ -12,11 +15,17 @@ void	GameObject::loadShaders(void)
 	HRESULT hr = S_OK;
 
 	hr = D3DCompileFromFile(L"VertexShader.hlsl", nullptr, nullptr, "main", "vs_4_0", 0, 0, &vertexBlob, nullptr);
-
+	if (FAILED(hr))
+		throw(DirectXException(hr, __FILE__, __LINE__));
 	hr = D3DCompileFromFile(L"PixelShader.hlsl", nullptr, nullptr, "main", "ps_4_0", 0, 0, &pixelBlob, nullptr);
-	
+	if (FAILED(hr))
+		throw(DirectXException(hr, __FILE__, __LINE__));
 	hr = device->CreateVertexShader(vertexBlob->GetBufferPointer(), vertexBlob->GetBufferSize(), nullptr, &vertexShader);
+	if (FAILED(hr))
+		throw(DirectXException(hr, __FILE__, __LINE__));
 	hr = device->CreatePixelShader(pixelBlob->GetBufferPointer(), pixelBlob->GetBufferSize(), nullptr, &pixelShader);
+	if (FAILED(hr))
+		throw(DirectXException(hr, __FILE__, __LINE__));
 	devContext->VSSetShader(vertexShader, 0, 0);
 	devContext->PSSetShader(pixelShader, 0, 0);
 	createInputElements(vertexBlob);
@@ -24,35 +33,92 @@ void	GameObject::loadShaders(void)
 
 void	GameObject::createVertices(void)
 {
-	D3D11_BUFFER_DESC	bd;
+	//D3D11_BUFFER_DESC structure allows us to describe the buffers
+	D3D11_BUFFER_DESC	vertexBufferDesc, indexBufferDesc;
 	HRESULT hr = S_OK;
-	Vertex	triangle[] =
+	Vertex	square[] =
 	{
 		points[0],
 		points[1],
 		points[2],
 		points[3]
 	};
-	int	indices[]
+	/*Vertex	square[] =
+	{
+		points[0],
+		points[1],
+		points[2]
+	};*/
+	UINT	indices[]
 	{
 		0, 1, 2,
 		0, 2, 3
 	};
-	ZeroMemory(&bd, sizeof(bd));
-	bd.Usage = D3D11_USAGE_DYNAMIC;
-	bd.ByteWidth = sizeof(Vertex) * 3;
-	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	ZeroMemory(&indexBufferDesc, sizeof(indexBufferDesc));
+	ZeroMemory(&vertexBufferDesc, sizeof(vertexBufferDesc));
+	
+	vertexBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	vertexBufferDesc.ByteWidth = sizeof(square);
+	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	vertexBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
-	hr = device->CreateBuffer(&bd, nullptr, &vertexBuffer);
+	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	indexBufferDesc.ByteWidth = sizeof(indices);
+	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	indexBufferDesc.CPUAccessFlags = NULL;
+	indexBufferDesc.MiscFlags = NULL;
+	
+	//to tell the GPU how to use provided data in indicies
+	D3D11_SUBRESOURCE_DATA initData;
+	ZeroMemory(&initData, sizeof(initData));
+	initData.pSysMem = square;
+	hr = device->CreateBuffer(&vertexBufferDesc, &initData, &vertexBuffer);
+	if (FAILED(hr))
+		throw(DirectXException(hr, __FILE__, __LINE__));
+	ZeroMemory(&initData, sizeof(initData));
+
+	initData.pSysMem = indices;
+	initData.SysMemPitch = NULL;
+	initData.SysMemSlicePitch = NULL;
+	hr = device->CreateBuffer(&indexBufferDesc, &initData, &indexBuffer);
+	if (FAILED(hr))
+		throw(DirectXException(hr, __FILE__, __LINE__));
 	D3D11_MAPPED_SUBRESOURCE ms;
-
+	hr = devContext->Map(vertexBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
+	if (FAILED(hr))
+		throw(DirectXException(hr, __FILE__, __LINE__));
+	memcpy(ms.pData, square, sizeof(square));
+	devContext->Unmap(vertexBuffer, NULL);
 }
 
-void	GameObject::createInputElements(ID3D10Blob* bl)
+void	GameObject::createInputElements(ID3D10Blob* vertexBlob)
 {
-
+	HRESULT hr = S_OK;
+	D3D11_INPUT_ELEMENT_DESC inputElmDesc[] =
+	{
+		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		{"COLOR", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0}
+	};
+	hr = device->CreateInputLayout(inputElmDesc, 2, vertexBlob->GetBufferPointer(), vertexBlob->GetBufferSize(), &layout);
+	if (FAILED(hr))
+		throw(DirectXException(hr, __FILE__, __LINE__));
+	devContext->IASetInputLayout(layout);
 }
 
 void	GameObject::render(void)
-{}
+{
+	UINT	stride = sizeof(Vertex);
+	UINT	offset = 0;
+
+	devContext->IASetVertexBuffers(NULL, 1, &vertexBuffer, &stride, &offset);
+	devContext->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, NULL);
+	devContext->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	devContext->DrawIndexed(6, 0, 0);
+	//devContext->Draw(3, 0);
+}
+
+void	GameObject::setDevice(ID3D11Device* device, ID3D11DeviceContext* devContext)
+{
+	this->device = device;
+	this->devContext = devContext;
+}

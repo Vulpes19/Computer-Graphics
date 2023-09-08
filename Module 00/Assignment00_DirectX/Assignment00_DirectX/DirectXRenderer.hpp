@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DirectX.hpp"
+#include "GameObject.hpp"
 
 class DirectXRenderer
 {
@@ -15,6 +16,7 @@ class DirectXRenderer
 		ID3D11Device* device = nullptr;
 		ID3D11DeviceContext* devContext = nullptr;
 		ID3D11RenderTargetView* backBuff = nullptr;
+		GameObject* test;
 		void	initDirect3D(void);
 		void	createRenderTarget(void);
 		void	setViewport(void);

@@ -3,6 +3,19 @@
 DirectXRenderer::DirectXRenderer(HWND hWnd) : hWnd(hWnd)
 {
 	initDirect3D();
+	std::vector<Vertex> points;
+	points.push_back({ -0.45f, 0.5f, 0.0f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) });
+	points.push_back({ 0.45f, -0.5f, 0.0f, DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) });
+	points.push_back({ -0.45f, -0.5f, 0.0f, DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) });
+	points.push_back({ 0.45f, 0.5f, 0.0f, DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) });
+	//points.push_back({ 0.25f, -0.25f, 0.0f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) });
+	//points.push_back({ 0.25f, 0.25f, 0.0f, DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) });
+	//points.push_back({ -0.25f, 0.25f, 0.0f, DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) });
+	//points.push_back({ -0.25f, -0.25f, 0.0f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f)});
+	test = new GameObject(points);
+	test->setDevice(device, devContext);
+	test->loadShaders();
+	test->createVertices();
 }
 
 DirectXRenderer::~DirectXRenderer(void)
@@ -39,7 +52,8 @@ void	DirectXRenderer::initDirect3D(void)
 		nullptr,
 		&devContext
 	);
-
+	if (FAILED(hr))
+		throw(DirectXException(hr, __FILE__, __LINE__));
 	createRenderTarget();
 }
 
@@ -49,6 +63,8 @@ void	DirectXRenderer::createRenderTarget(void)
 	HRESULT hr = S_OK;
 
 	hr = swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBuffAddr);
+	if (FAILED(hr))
+		throw(DirectXException(hr, __FILE__, __LINE__));
 	if ( backBuffAddr != 0 )
 		hr = device->CreateRenderTargetView(backBuffAddr, NULL, &backBuff);
 	backBuffAddr->Release();
@@ -71,9 +87,13 @@ void	DirectXRenderer::setViewport(void)
 
 void	DirectXRenderer::render(void)
 {
-	float color[] = { 1.0f, 0.5f, 0.0f, 1.0f };
+	float color[] = { 0.0f, 0.5f, 0.0f, 1.0f };
 	devContext->ClearRenderTargetView(backBuff, color);
+	//test->setDevice(device, devContext);
+	test->render();
 	HRESULT hr = swapChain->Present(0, 0);
+	if (FAILED(hr))
+		throw(DirectXException(hr, __FILE__, __LINE__));
 }
 
 ID3D11Device* DirectXRenderer::getDevice(void) const

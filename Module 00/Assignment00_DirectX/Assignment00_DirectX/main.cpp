@@ -60,19 +60,31 @@ int	WINAPI	WinMain(
 	);
 	ShowWindow(window, nShowCmd);
 	MSG msg = { 0 };
-	DirectXRenderer App(window);
-
-	while (TRUE)
+	try
 	{
-		if (PeekMessageW(&msg, NULL, 0, 0, PM_REMOVE))
+		DirectXRenderer App(window);
+
+		while (TRUE)
 		{
-			TranslateMessage(&msg);
-			DispatchMessageW(&msg);
-			if (msg.message == WM_QUIT)
-				break;
+			if (PeekMessageW(&msg, NULL, 0, 0, PM_REMOVE))
+			{
+				TranslateMessage(&msg);
+				DispatchMessageW(&msg);
+				if (msg.message == WM_QUIT)
+					break;
+			}
+			else
+				App.render();
 		}
-		else
-			App.render();
+	}
+	catch (const DirectXException& e)
+	{
+		OutputDebugStringA(e.what());
+		OutputDebugStringA("\nfile ");
+		OutputDebugStringA(e.getFile());
+		OutputDebugStringA(", ");
+		OutputDebugStringA(std::to_string(e.getLine()).c_str());
+		OutputDebugStringA("\n");
 	}
 	return (msg.wParam);
 }

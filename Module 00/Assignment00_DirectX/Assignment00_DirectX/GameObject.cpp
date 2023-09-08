@@ -43,12 +43,6 @@ void	GameObject::createVertices(void)
 		points[2],
 		points[3]
 	};
-	/*Vertex	square[] =
-	{
-		points[0],
-		points[1],
-		points[2]
-	};*/
 	UINT	indices[]
 	{
 		0, 1, 2,
@@ -69,10 +63,10 @@ void	GameObject::createVertices(void)
 	indexBufferDesc.MiscFlags = NULL;
 	
 	//to tell the GPU how to use provided data in indicies
-	D3D11_SUBRESOURCE_DATA initData;
-	ZeroMemory(&initData, sizeof(initData));
-	initData.pSysMem = square;
-	hr = device->CreateBuffer(&vertexBufferDesc, &initData, &vertexBuffer);
+	D3D11_SUBRESOURCE_DATA initData, vertexData;
+	ZeroMemory(&vertexData, sizeof(vertexData));
+	vertexData.pSysMem = square;
+	hr = device->CreateBuffer(&vertexBufferDesc, &vertexData, &vertexBuffer);
 	if (FAILED(hr))
 		throw(DirectXException(hr, __FILE__, __LINE__));
 	ZeroMemory(&initData, sizeof(initData));
@@ -83,12 +77,12 @@ void	GameObject::createVertices(void)
 	hr = device->CreateBuffer(&indexBufferDesc, &initData, &indexBuffer);
 	if (FAILED(hr))
 		throw(DirectXException(hr, __FILE__, __LINE__));
-	D3D11_MAPPED_SUBRESOURCE ms;
-	hr = devContext->Map(vertexBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
-	if (FAILED(hr))
-		throw(DirectXException(hr, __FILE__, __LINE__));
-	memcpy(ms.pData, square, sizeof(square));
-	devContext->Unmap(vertexBuffer, NULL);
+	//D3D11_MAPPED_SUBRESOURCE ms;
+	//hr = devContext->Map(vertexBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
+	//if (FAILED(hr))
+	//	throw(DirectXException(hr, __FILE__, __LINE__));
+	//memcpy(ms.pData, square, sizeof(square));
+	//devContext->Unmap(vertexBuffer, NULL);
 }
 
 void	GameObject::createInputElements(ID3D10Blob* vertexBlob)

@@ -4,10 +4,10 @@ DirectXRenderer::DirectXRenderer(HWND hWnd) : hWnd(hWnd)
 {
 	initDirect3D();
 	std::vector<Vertex> points;
-	points.push_back({ -0.45f, 0.5f, 0.0f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) });
-	points.push_back({ 0.45f, -0.5f, 0.0f, DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) });
-	points.push_back({ -0.45f, -0.5f, 0.0f, DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) });
-	points.push_back({ 0.45f, 0.5f, 0.0f, DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) });
+	points.push_back({ 0.45f, -0.5f, 0.0f });
+	points.push_back({ -0.45f, -0.5f, 0.0f });
+	points.push_back({ -0.45f, 0.5f, 0.0f });
+	points.push_back({ 0.45f, 0.5f, 0.0f });
 	//points.push_back({ 0.25f, -0.25f, 0.0f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) });
 	//points.push_back({ 0.25f, 0.25f, 0.0f, DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) });
 	//points.push_back({ -0.25f, 0.25f, 0.0f, DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) });

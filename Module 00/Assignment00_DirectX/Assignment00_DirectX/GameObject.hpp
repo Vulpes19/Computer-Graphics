@@ -12,7 +12,7 @@ struct Vertex
 	FLOAT x;
 	FLOAT y;
 	FLOAT z;
-	DirectX::XMFLOAT4 color;
+	//DirectX::XMFLOAT4 color;
 };
 
 class GameObject

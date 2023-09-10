@@ -91,9 +91,8 @@ void	GameObject::createInputElements(ID3D10Blob* vertexBlob)
 	D3D11_INPUT_ELEMENT_DESC inputElmDesc[] =
 	{
 		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-		{"COLOR", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0}
 	};
-	hr = device->CreateInputLayout(inputElmDesc, 2, vertexBlob->GetBufferPointer(), vertexBlob->GetBufferSize(), &layout);
+	hr = device->CreateInputLayout(inputElmDesc, 1, vertexBlob->GetBufferPointer(), vertexBlob->GetBufferSize(), &layout);
 	if (FAILED(hr))
 		throw(DirectXException(hr, __FILE__, __LINE__));
 	devContext->IASetInputLayout(layout);

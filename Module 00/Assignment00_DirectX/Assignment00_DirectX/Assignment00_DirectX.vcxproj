@@ -144,6 +144,7 @@
     <ClCompile Include="DirectXRenderer.cpp" />
     <ClCompile Include="ErrorHandling.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -151,6 +152,8 @@
     <ClInclude Include="DirectXRenderer.hpp" />
     <ClInclude Include="ErrorHandling.hpp" />
     <ClInclude Include="GameObject.hpp" />
+    <ClInclude Include="InputHandler.hpp" />
+    <ClInclude Include="InputObserver.hpp" />
     <ClInclude Include="Player.hpp" />
   </ItemGroup>
   <ItemGroup>

@@ -7,6 +7,7 @@
 #include <d3d10.h>
 #include <d3d9.h>
 #include <d3dcompiler.h>
+#include <dinput.h>
 #include <string>
 #include "ErrorHandling.hpp"
 

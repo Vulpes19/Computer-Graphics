@@ -8,18 +8,23 @@ DirectXRenderer::DirectXRenderer(HWND hWnd) : hWnd(hWnd)
 	points.push_back({ -0.45f, -0.5f, 0.0f });
 	points.push_back({ -0.45f, 0.5f, 0.0f });
 	points.push_back({ 0.45f, 0.5f, 0.0f });
-	//points.push_back({ 0.25f, -0.25f, 0.0f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) });
-	//points.push_back({ 0.25f, 0.25f, 0.0f, DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) });
-	//points.push_back({ -0.25f, 0.25f, 0.0f, DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) });
-	//points.push_back({ -0.25f, -0.25f, 0.0f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f)});
-	test = new GameObject(points);
+	
+	test = new Player(points);
 	test->setDevice(device, devContext);
 	test->loadShaders();
 	test->createVertices();
+	input = new InputHandler(hWnd);
+	input->addObserver(test);
+	//InputObserver* playerAsObserver = dynamic_cast<InputObserver*>(test);
+
+	//f (playerAsObserver) {
+	//	input->addObserver(playerAsObserver);
+	//}
 }
 
 DirectXRenderer::~DirectXRenderer(void)
 {
+	//delete test;
 	swapChain->Release();
 	backBuff->Release();
 	device->Release();
@@ -83,6 +88,12 @@ void	DirectXRenderer::setViewport(void)
 	viewport.Height = 600;
 
 	devContext->RSSetViewports(1, &viewport);
+}
+
+void	DirectXRenderer::update(void)
+{
+	input->pollDevice();
+	input->processInput();
 }
 
 void	DirectXRenderer::render(void)

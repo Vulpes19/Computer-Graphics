@@ -12,6 +12,7 @@ class InputHandler
 		void	pollDevice(void);
 		void	addObserver(InputObserver*);
 		void	eraseObserver(InputObserver*);
+		void	processInput(void);
 		void	notifyKeyDown(int key);
 		void	notifyKeyUp(int key);
 		void	notifyMouseMove(float x, float y);

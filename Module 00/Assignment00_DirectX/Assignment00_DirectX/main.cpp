@@ -74,7 +74,10 @@ int	WINAPI	WinMain(
 					break;
 			}
 			else
+			{
 				App.render();
+				App.update();
+			}
 		}
 	}
 	catch (const DirectXException& e)

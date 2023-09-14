@@ -39,6 +39,28 @@ InputHandler::~InputHandler(void)
 		directInput->Release();
 }
 
+void	InputHandler::processInput(void)
+{
+	BYTE  diKeys[256];
+	if (keyboardDevice->GetDeviceState(256, diKeys) == DI_OK)
+	{
+		BYTE key = '0';
+		if (diKeys[DIK_W] & 0x80)
+			key = DIK_W;
+		if (diKeys[DIK_S] & 0x80)
+			key = DIK_S;
+		if (diKeys[DIK_A] & 0x80)
+			key = DIK_A;
+		if (diKeys[DIK_D] & 0x80)
+			key = DIK_D;
+		if (key != '0')
+		{
+			for (auto observer : observers)
+				observer->keyDown(key);
+		}
+	}
+}
+
 void	InputHandler::pollDevice(void)
 {
 	keyboardDevice->Poll();
@@ -70,5 +92,5 @@ void	InputHandler::notifyKeyUp(int key)
 void	InputHandler::notifyMouseMove(float x, float y)
 {
 	for (auto observer : observers)
-		observer->mouseMove();
+		observer->mouseMove(x, y);
 }

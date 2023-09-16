@@ -20,4 +20,5 @@ class InputHandler
 		IDirectInput8	*directInput = nullptr;
 		IDirectInputDevice8* keyboardDevice = nullptr;
 		std::vector<InputObserver*> observers;
+		bool keyWasPressed = false;
 };

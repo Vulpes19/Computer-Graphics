@@ -55,9 +55,17 @@ void	InputHandler::processInput(void)
 			key = DIK_D;
 		if (key != '0')
 		{
-			OutputDebugStringW(L"a key is pressed\n");
-			for (auto observer : observers)
-				observer->keyDown(key);
+			if (!keyWasPressed)  // Only notify observers if the key wasn't pressed before
+			{
+				OutputDebugStringW(L"a key is pressed\n");
+				for (auto observer : observers)
+					observer->keyDown(key);
+			}
+			keyWasPressed = true;  // Set the flag to true to indicate the key was pressed
+		}
+		else
+		{
+			keyWasPressed = false;  // Reset the flag if no key is currently pressed
 		}
 	}
 }

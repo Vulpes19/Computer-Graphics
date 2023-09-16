@@ -1,6 +1,6 @@
 #include "GameObject.hpp"
 
-GameObject::GameObject(std::vector<Vertex> points) : points(points)
+GameObject::GameObject(std::vector<Vertex> vertices) : vertices(vertices)
 {
 	//loadShaders();
 	//createVertices();
@@ -38,10 +38,10 @@ void	GameObject::createVertices(void)
 	HRESULT hr = S_OK;
 	Vertex	square[] =
 	{
-		points[0],
-		points[1],
-		points[2],
-		points[3]
+		vertices[0],
+		vertices[1],
+		vertices[2],
+		vertices[3]
 	};
 	UINT	indices[]
 	{
@@ -77,12 +77,12 @@ void	GameObject::createVertices(void)
 	hr = device->CreateBuffer(&indexBufferDesc, &initData, &indexBuffer);
 	if (FAILED(hr))
 		throw(DirectXException(hr, __FILE__, __LINE__));
-	//D3D11_MAPPED_SUBRESOURCE ms;
-	//hr = devContext->Map(vertexBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
-	//if (FAILED(hr))
-	//	throw(DirectXException(hr, __FILE__, __LINE__));
-	//memcpy(ms.pData, square, sizeof(square));
-	//devContext->Unmap(vertexBuffer, NULL);
+	D3D11_MAPPED_SUBRESOURCE ms;
+	hr = devContext->Map(vertexBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
+	if (FAILED(hr))
+		throw(DirectXException(hr, __FILE__, __LINE__));
+	memcpy(ms.pData, square, sizeof(square));
+	devContext->Unmap(vertexBuffer, NULL);
 }
 
 void	GameObject::createInputElements(ID3D10Blob* vertexBlob)

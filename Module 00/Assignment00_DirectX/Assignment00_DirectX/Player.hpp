@@ -3,6 +3,14 @@
 #include "GameObject.hpp"
 #include "InputObserver.hpp"
 
+enum class DIRECTION
+{
+	UP,
+	DOWN,
+	RIGHT,
+	LEFT
+};
+
 class Player : public GameObject, public InputObserver 
 {
 	public:
@@ -11,4 +19,5 @@ class Player : public GameObject, public InputObserver
 		void	keyDown(BYTE) override;
 		void	keyUp(int) override {};
 		void	mouseMove(float, float) override {};
+		void	handleMovement(DIRECTION);
 };

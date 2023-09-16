@@ -27,7 +27,7 @@ class GameObject
 		void	render(void);
 		void	setDevice(ID3D11Device*, ID3D11DeviceContext*);
 	protected:
-		std::vector<Vertex> points;
+		std::vector<Vertex> vertices;
 		ID3D11Device* device = nullptr;
 		ID3D11DeviceContext* devContext = nullptr;
 		ID3D11VertexShader* vertexShader = nullptr;

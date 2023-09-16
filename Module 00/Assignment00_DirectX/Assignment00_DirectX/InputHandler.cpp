@@ -55,6 +55,7 @@ void	InputHandler::processInput(void)
 			key = DIK_D;
 		if (key != '0')
 		{
+			OutputDebugStringW(L"a key is pressed\n");
 			for (auto observer : observers)
 				observer->keyDown(key);
 		}

@@ -15,20 +15,16 @@ DirectXRenderer::DirectXRenderer(HWND hWnd) : hWnd(hWnd)
 	test->createVertices();
 	input = new InputHandler(hWnd);
 	input->addObserver(test);
-	//InputObserver* playerAsObserver = dynamic_cast<InputObserver*>(test);
-
-	//f (playerAsObserver) {
-	//	input->addObserver(playerAsObserver);
-	//}
 }
 
 DirectXRenderer::~DirectXRenderer(void)
 {
-	//delete test;
 	swapChain->Release();
 	backBuff->Release();
 	device->Release();
 	devContext->Release();
+	delete test;
+	delete input;
 }
 
 void	DirectXRenderer::initDirect3D(void)

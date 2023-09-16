@@ -1,5 +1,7 @@
 #pragma once
 
+//observer pattern
+
 class InputObserver
 {
 	public:

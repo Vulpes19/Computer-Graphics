@@ -4,10 +4,10 @@ DirectXRenderer::DirectXRenderer(HWND hWnd) : hWnd(hWnd)
 {
 	initDirect3D();
 	std::vector<Vertex> points;
-	points.push_back({ 0.45f, -0.5f, 0.0f });
-	points.push_back({ -0.45f, -0.5f, 0.0f });
-	points.push_back({ -0.45f, 0.5f, 0.0f });
-	points.push_back({ 0.45f, 0.5f, 0.0f });
+	points.push_back({ 0.2f, -0.99f, 0.0f });
+	points.push_back({ -0.2f, -0.99f, 0.0f });
+	points.push_back({ -0.2f, -0.7f, 0.0f });
+	points.push_back({ 0.2f, -0.7f, 0.0f });
 	
 	test = new Player(points);
 	test->setDevice(device, devContext);

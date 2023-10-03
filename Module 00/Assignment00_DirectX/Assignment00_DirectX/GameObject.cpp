@@ -17,7 +17,7 @@ void	GameObject::loadShaders(void)
 	hr = D3DCompileFromFile(L"VertexShader.hlsl", nullptr, nullptr, "main", "vs_4_0", 0, 0, &vertexBlob, nullptr);
 	if (FAILED(hr))
 		throw(DirectXException(hr, __FILE__, __LINE__));
-	hr = D3DCompileFromFile(L"PixelShader.hlsl", nullptr, nullptr, "main", "ps_4_0", 0, 0, &pixelBlob, nullptr);
+	hr = D3DCompileFromFile(L"PlayerPixelShader.hlsl", nullptr, nullptr, "main", "ps_4_0", 0, 0, &pixelBlob, nullptr);
 	if (FAILED(hr))
 		throw(DirectXException(hr, __FILE__, __LINE__));
 	hr = device->CreateVertexShader(vertexBlob->GetBufferPointer(), vertexBlob->GetBufferSize(), nullptr, &vertexShader);

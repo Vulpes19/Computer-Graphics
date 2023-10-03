@@ -56,9 +56,13 @@
     <ClInclude Include="InputObserver.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Obstacle.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="VertexShader.hlsl" />
-    <FxCompile Include="PixelShader.hlsl" />
+    <FxCompile Include="PlayerPixelShader.hlsl" />
+    <FxCompile Include="ObstaclesPixelShader.hlsl" />
   </ItemGroup>
 </Project>

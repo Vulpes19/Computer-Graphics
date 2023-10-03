@@ -20,10 +20,11 @@ class GameObject
 	public:
 		GameObject(std::vector<Vertex>);
 		~GameObject(void);
-		void	loadShaders(void);
+		virtual void	loadShaders(void);
+		virtual void	update(void) {};
+		virtual bool	deadObstacle(void) const;
 		void	createVertices(void);
 		void	createInputElements(ID3D10Blob*);
-		void	update(void) {};
 		void	render(void);
 		void	setDevice(ID3D11Device*, ID3D11DeviceContext*);
 	protected:

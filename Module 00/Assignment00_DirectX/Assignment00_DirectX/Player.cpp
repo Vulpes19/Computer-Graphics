@@ -30,11 +30,11 @@ void	Player::keyDown(BYTE key)
 
 void	Player::handleMovement(DIRECTION dir)
 {
+	/*
 	if (dir == DIRECTION::UP)
 	{
 		Vertex v = vertices[0];
-		v.y += 0.1f;
-		if (v.y > 1.0f)
+		if (v.y >= 1.0f)
 			return;
 		for (auto i = 0; i < vertices.size(); i++)
 		{
@@ -49,7 +49,6 @@ void	Player::handleMovement(DIRECTION dir)
 	if (dir == DIRECTION::DOWN)
 	{
 		Vertex v = vertices[1];
-		v.y -= 0.1f;
 		if (v.y < -1.0f)
 			return;
 		for (auto i = 0; i < vertices.size(); i++)
@@ -61,19 +60,16 @@ void	Player::handleMovement(DIRECTION dir)
 			OutputDebugStringA(std::to_string(vertex.y).c_str());
 			OutputDebugStringW(L" ");
 		}
-	}
+	}*/
 	if (dir == DIRECTION::RIGHT)
 	{
 		Vertex v = vertices[0];
-		v.x += 0.1f;
-		if (v.x > 1.0f)
+		if (v.x >= 1.0f)
 			return;
 		for (auto i = 0; i < vertices.size(); i++)
 		{
 			Vertex vertex = vertices[i];
 			vertex.x += 0.1f;
-			if (vertex.x > 1.0f)
-				return;
 			vertices[i] = vertex;
 			OutputDebugStringW(L"X: ");
 			OutputDebugStringA(std::to_string(vertex.x).c_str());
@@ -83,15 +79,12 @@ void	Player::handleMovement(DIRECTION dir)
 	if (dir == DIRECTION::LEFT)
 	{
 		Vertex v = vertices[1];
-		v.x -= 0.1f;
-		if (v.x < -1.0f)
+		if (v.x <= -1.0f)
 			return;
 		for (auto i = 0; i < vertices.size(); i++)
 		{
 			Vertex vertex = vertices[i];
 			vertex.x -= 0.1f;
-			if (vertex.x < -1.0f)
-				return;
 			vertices[i] = vertex;
 			OutputDebugStringW(L"X: ");
 			OutputDebugStringA(std::to_string(vertex.x).c_str());

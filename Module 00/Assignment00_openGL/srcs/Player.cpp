@@ -44,7 +44,7 @@ bool    Player::handleMovement( void )
     }
     for ( auto i = 0; i < 12; i += 3 )
     {
-        std::cout << vertices[i] << " " << vertices[i + 1] << " " << vertices[i + 2] << std::endl;
+        // std::cout << vertices[i] << " " << vertices[i + 1] << " " << vertices[i + 2] << std::endl;
         vertices[i] += moveSpeed * directionX;
         vertices[i + 1] += moveSpeed * directionY;
     }
@@ -82,4 +82,13 @@ void    Player::update( void )
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
     glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0 );
     glEnableVertexAttribArray(0);
+}
+
+std::vector<float> Player::getVertices( void ) const
+{
+    std::vector<float> ret;
+
+    for ( size_t i = 0; i < 12; i++ )
+        ret.push_back(vertices[i]);
+    return (ret);
 }

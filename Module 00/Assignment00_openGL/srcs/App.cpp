@@ -2,6 +2,7 @@
 
 App::App( int width, int height, const char *title )
 {
+    this->score = 0;
     this->width = width;
     this->height = height;
     this->title = title;
@@ -52,6 +53,7 @@ int App::init( void )
     for ( auto &obstacle : obstacles )
             obstacle->init();
     start = time_clock::now();
+    std::cout << "The score is: " << score << std::endl;
     return (EXIT_SUCCESS);
 }
 
@@ -72,17 +74,42 @@ void    App::render( void )
             obstacle->init();
     }
     for ( auto &obstacle : obstacles )
+    {
+        obstacle->handleCollision(player->getVertices(), score);
+        if ( !obstacle->deadObstacle() )
+        {
             obstacle->draw();
+        }
+    }
     glfwSwapBuffers( window );
     end = time_clock::now();
     std::chrono::duration<double> elapsed = std::chrono::duration_cast<std::chrono::duration<double>>(end - start);
     if ( player->handleMovement() )
         player->update();
-    if ( elapsed.count() >= 1.0 )
+    if ( elapsed.count() >= 0.5 )
     {
         for ( auto &obstacle : obstacles )
+        {
+            if ( obstacle->deadObstacle() )
+                continue ;
             obstacle->update();
+            if ( obstacle->deadObstacle() )
+            {
+                score += 5;
+                std::cout << "The score is: " << score << std::endl;
+            }
+        }
         start = time_clock::now();
+    }
+    if ( score == 30 )
+    {
+        std::cout << "YOU WON\n";
+        glfwSetWindowShouldClose(window, true);
+    }
+    if ( score == -10 )
+    {
+        std::cout << "YOU LOSE\n";
+        glfwSetWindowShouldClose(window, true);
     }
 }
 
@@ -96,7 +123,7 @@ void    App::generateObstacles( void )
     
     std::uniform_real_distribution<float> distributionX(minX, maxX);
     std::uniform_real_distribution<float> distributionY(maxY, maxY - 0.25f);
-    for ( auto i = 0; i < 3; i++ )
+    for ( auto i = 0; i < 4; i++ )
     {
         float randomX = distributionX( gen );
         float randomY = distributionY( gen );

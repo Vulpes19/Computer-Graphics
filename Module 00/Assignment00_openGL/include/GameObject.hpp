@@ -30,6 +30,8 @@ class GameObject
 		virtual bool    handleMovement( void ) { return (false); };
 		virtual void    update( void ) {};
         virtual	bool    deadObstacle( void ) const { return (false); };
+		virtual	void	handleCollision( std::vector<float>, int & ) {};
+        virtual std::vector<float>    getVertices( void ) const { return (std::vector<float>()); };
 	protected:
 		std::vector<Point>	points;
 		float   			vertices[12];

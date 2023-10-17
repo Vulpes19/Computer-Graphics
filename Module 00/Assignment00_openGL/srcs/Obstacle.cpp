@@ -14,7 +14,9 @@ void    Obstacle::update( void )
     for ( auto i = 1; i < 12; i += 3 )
     {
         if ( vertices[i] <= normalizedBottomBorder )
+        {
             isDead = true;
+        }
         vertices[i] -= 0.1f;
     }
     if ( vertexBufferObj != 0 )
@@ -46,6 +48,19 @@ void    Obstacle::update( void )
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
     glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0 );
     glEnableVertexAttribArray(0);
+}
+
+void    Obstacle::handleCollision( std::vector<float> playerVertices, int &score )
+{
+    if ( ((vertices[0] >= playerVertices[0] && vertices[0] <= playerVertices[3]) ||
+            (vertices[3] >= playerVertices[0] && vertices[3] <= playerVertices[3])) &&
+            ((vertices[1] <= playerVertices[1] && vertices[1] >= playerVertices[7]) ||
+             (vertices[7] <= playerVertices[1] && vertices[7] >= playerVertices[7])) )
+    {
+        isDead = true;
+        score -= 5;
+        std::cout << "The score is: " << score << std::endl;
+    }
 }
 
 bool    Obstacle::deadObstacle( void ) const

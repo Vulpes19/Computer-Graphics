@@ -25,6 +25,7 @@ class App
 		GLFWwindow*					window;
 		int							width;
 		int							height;
+		int							score;
 		const char					*title;
 		std::unique_ptr<GameObject>	player;
 		std::vector<std::unique_ptr<GameObject>>	obstacles;

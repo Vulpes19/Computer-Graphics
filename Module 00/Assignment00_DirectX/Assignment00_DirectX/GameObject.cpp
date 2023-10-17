@@ -1,6 +1,6 @@
 #include "GameObject.hpp"
 
-GameObject::GameObject(std::vector<Vertex> vertices) : vertices(vertices)
+GameObject::GameObject(std::vector<Vertex> vertices, const char *vShaderPath, const char* pShaderPath) : vertices(vertices), vShaderPath(vShaderPath), pShaderPath(pShaderPath)
 {
 	//loadShaders();
 	//createVertices();
@@ -13,11 +13,18 @@ void	GameObject::loadShaders(void)
 {
 	ID3D10Blob* vertexBlob, * pixelBlob;
 	HRESULT hr = S_OK;
-
-	hr = D3DCompileFromFile(L"VertexShader.hlsl", nullptr, nullptr, "main", "vs_4_0", 0, 0, &vertexBlob, nullptr);
+	size_t len = MultiByteToWideChar(CP_ACP, 0, vShaderPath, -1, nullptr, 0);
+	wchar_t* wShaderPath = new wchar_t[len];
+	MultiByteToWideChar(CP_ACP, 0, vShaderPath, -1, wShaderPath, len);
+	hr = D3DCompileFromFile(wShaderPath, nullptr, nullptr, "main", "vs_4_0", 0, 0, &vertexBlob, nullptr);
+	delete[] wShaderPath;
 	if (FAILED(hr))
 		throw(DirectXException(hr, __FILE__, __LINE__));
-	hr = D3DCompileFromFile(L"PlayerPixelShader.hlsl", nullptr, nullptr, "main", "ps_4_0", 0, 0, &pixelBlob, nullptr);
+	len = MultiByteToWideChar(CP_ACP, 0, pShaderPath, -1, nullptr, 0);
+	wShaderPath = new wchar_t[len];
+	MultiByteToWideChar(CP_ACP, 0, pShaderPath, -1, wShaderPath, len);
+	hr = D3DCompileFromFile(wShaderPath, nullptr, nullptr, "main", "ps_4_0", 0, 0, &pixelBlob, nullptr);
+	delete[] wShaderPath;
 	if (FAILED(hr))
 		throw(DirectXException(hr, __FILE__, __LINE__));
 	hr = device->CreateVertexShader(vertexBlob->GetBufferPointer(), vertexBlob->GetBufferSize(), nullptr, &vertexShader);

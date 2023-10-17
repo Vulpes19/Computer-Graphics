@@ -19,7 +19,7 @@ class DirectXRenderer
 		ID3D11Device* device = nullptr;
 		ID3D11DeviceContext* devContext = nullptr;
 		ID3D11RenderTargetView* backBuff = nullptr;
-		Player* test;
+		GameObject* player;
 		InputHandler	*input;
 		void	initDirect3D(void);
 		void	createRenderTarget(void);

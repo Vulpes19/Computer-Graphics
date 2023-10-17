@@ -18,11 +18,11 @@ struct Vertex
 class GameObject
 {
 	public:
-		GameObject(std::vector<Vertex>);
+		GameObject(std::vector<Vertex>, const char *, const char *);
 		~GameObject(void);
 		virtual void	loadShaders(void);
 		virtual void	update(void) {};
-		virtual bool	deadObstacle(void) const;
+		virtual bool	deadObstacle(void) const { return (false); };
 		void	createVertices(void);
 		void	createInputElements(ID3D10Blob*);
 		void	render(void);
@@ -36,4 +36,6 @@ class GameObject
 		ID3D11InputLayout* layout = nullptr;
 		ID3D11Buffer* vertexBuffer = nullptr;
 		ID3D11Buffer* indexBuffer = nullptr;
+		const char* vShaderPath = nullptr;
+		const char* pShaderPath = nullptr;
 };

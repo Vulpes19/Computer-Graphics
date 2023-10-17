@@ -9,12 +9,14 @@ DirectXRenderer::DirectXRenderer(HWND hWnd) : hWnd(hWnd)
 	points.push_back({ -0.2f, -0.7f, 0.0f });
 	points.push_back({ 0.2f, -0.7f, 0.0f });
 	
-	test = new Player(points);
-	test->setDevice(device, devContext);
-	test->loadShaders();
-	test->createVertices();
+	player = new Player(points, "VertexShader.hlsl", "PlayerPixelShader.hlsl");
+	player->setDevice(device, devContext);
+	player->loadShaders();
+	player->createVertices();
 	input = new InputHandler(hWnd);
-	input->addObserver(test);
+	InputObserver* playerObs = dynamic_cast<InputObserver*>(player);
+	if (playerObs)
+		input->addObserver(playerObs);
 }
 
 DirectXRenderer::~DirectXRenderer(void)
@@ -23,7 +25,7 @@ DirectXRenderer::~DirectXRenderer(void)
 	backBuff->Release();
 	device->Release();
 	devContext->Release();
-	delete test;
+	delete player;
 	delete input;
 }
 
@@ -97,7 +99,7 @@ void	DirectXRenderer::render(void)
 	float color[] = { 0.0f, 0.5f, 0.0f, 1.0f };
 	devContext->ClearRenderTargetView(backBuff, color);
 	//test->setDevice(device, devContext);
-	test->render();
+	player->render();
 	HRESULT hr = swapChain->Present(0, 0);
 	if (FAILED(hr))
 		throw(DirectXException(hr, __FILE__, __LINE__));

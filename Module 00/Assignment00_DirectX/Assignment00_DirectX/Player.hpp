@@ -14,7 +14,7 @@ enum class DIRECTION
 class Player : public GameObject, public InputObserver 
 {
 	public:
-		Player(std::vector<Vertex>);
+		Player(std::vector<Vertex>, const char *, const char *);
 		~Player(void);
 		void	keyDown(BYTE) override;
 		void	keyUp(int) override {};

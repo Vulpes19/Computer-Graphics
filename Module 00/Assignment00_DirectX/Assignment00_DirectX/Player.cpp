@@ -1,7 +1,7 @@
 #include "Player.hpp"
 #include <string>
 
-Player::Player( std::vector<Vertex> vertices ) : GameObject(vertices), InputObserver()
+Player::Player( std::vector<Vertex> vertices, const char *vShaderPath = "VertexShader.hlsl", const char *pShaderPath = "PlayerPixelShader.hlsl") : GameObject(vertices, vShaderPath, pShaderPath), InputObserver()
 {}
 
 Player::~Player(void)

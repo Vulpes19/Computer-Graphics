@@ -8,9 +8,12 @@ Obstacle::~Obstacle(void)
 
 void	Obstacle::update(void)
 {
-	Vertex v = vertices[1];
+	Vertex v = vertices[0];
 	if (v.y < -1.0f)
+	{
+		isDead = true;
 		return;
+	}
 	for (auto i = 0; i < vertices.size(); i++)
 	{
 		Vertex vertex = vertices[i];

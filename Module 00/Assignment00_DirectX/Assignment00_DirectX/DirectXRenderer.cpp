@@ -18,12 +18,6 @@ DirectXRenderer::DirectXRenderer(HWND hWnd) : hWnd(hWnd)
 	if (playerObs)
 		input->addObserver(playerObs);
 	generateObstacles();
-	for (auto &obstacle : obstacles)
-	{
-		obstacle->setDevice(device, devContext);
-		obstacle->loadShaders();
-		obstacle->createVertices();
-	}
 	start = time_clock::now();
 }
 
@@ -100,6 +94,8 @@ void	DirectXRenderer::update(void)
 {
 	input->pollDevice();
 	input->processInput();
+	if (obstacles.empty())
+		generateObstacles();
 	end = time_clock::now();
 	std::chrono::duration<double> elapsed = std::chrono::duration_cast<std::chrono::duration<double>>(end - start);
 	if (elapsed.count() >= 1.0)
@@ -108,6 +104,10 @@ void	DirectXRenderer::update(void)
 			obstacle->update();
 		start = time_clock::now();
 	}
+	auto it = remove_if(obstacles.begin(), obstacles.end(), [](const Obstacle* obstacle) {
+		return obstacle->deadObstacle() ? true : false;
+	});
+	obstacles.erase(it, obstacles.end());
 }
 
 void	DirectXRenderer::render(void)
@@ -147,5 +147,11 @@ void	DirectXRenderer::generateObstacles(void)
 		points.push_back(Vertex(randomX + 0.15f, randomY - 0.25f));
 		points.push_back(Vertex(randomX, randomY - 0.25f));
 		obstacles.push_back(new Obstacle(points, "VertexShader.hlsl", "ObstaclesPixelShader.hlsl"));
+	}
+	for (auto& obstacle : obstacles)
+	{
+		obstacle->setDevice(device, devContext);
+		obstacle->loadShaders();
+		obstacle->createVertices();
 	}
 }

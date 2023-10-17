@@ -8,7 +8,10 @@
 #include <d3d9.h>
 #include <d3dcompiler.h>
 #include <dinput.h>
+#include <random>
 #include <string>
+#include <vector>
+#include <chrono>
 #include "ErrorHandling.hpp"
 
 #pragma comment (lib, "d3d11.lib")

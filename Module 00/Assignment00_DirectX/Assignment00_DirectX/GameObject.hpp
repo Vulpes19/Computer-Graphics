@@ -9,6 +9,7 @@
 
 struct Vertex
 {
+	Vertex(float x, float y, float z = 0.0f) : x(x), y(y), z(z) {};
 	FLOAT x;
 	FLOAT y;
 	FLOAT z;

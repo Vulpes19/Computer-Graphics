@@ -17,6 +17,14 @@ DirectXRenderer::DirectXRenderer(HWND hWnd) : hWnd(hWnd)
 	InputObserver* playerObs = dynamic_cast<InputObserver*>(player);
 	if (playerObs)
 		input->addObserver(playerObs);
+	generateObstacles();
+	for (auto &obstacle : obstacles)
+	{
+		obstacle->setDevice(device, devContext);
+		obstacle->loadShaders();
+		obstacle->createVertices();
+	}
+	start = time_clock::now();
 }
 
 DirectXRenderer::~DirectXRenderer(void)
@@ -92,6 +100,14 @@ void	DirectXRenderer::update(void)
 {
 	input->pollDevice();
 	input->processInput();
+	end = time_clock::now();
+	std::chrono::duration<double> elapsed = std::chrono::duration_cast<std::chrono::duration<double>>(end - start);
+	if (elapsed.count() >= 1.0)
+	{
+		for (auto& obstacle : obstacles)
+			obstacle->update();
+		start = time_clock::now();
+	}
 }
 
 void	DirectXRenderer::render(void)
@@ -100,6 +116,8 @@ void	DirectXRenderer::render(void)
 	devContext->ClearRenderTargetView(backBuff, color);
 	//test->setDevice(device, devContext);
 	player->render();
+	for (auto &obstacle : obstacles)
+		obstacle->render();
 	HRESULT hr = swapChain->Present(0, 0);
 	if (FAILED(hr))
 		throw(DirectXException(hr, __FILE__, __LINE__));
@@ -108,4 +126,26 @@ void	DirectXRenderer::render(void)
 ID3D11Device* DirectXRenderer::getDevice(void) const
 {
 	return (device);
+}
+
+void	DirectXRenderer::generateObstacles(void)
+{
+	std::random_device  random;
+	std::mt19937 gen(random());
+	float minX = -1.0f;
+	float maxX = 1.0f;
+	float maxY = 1.0f;
+	std::uniform_real_distribution<float> distributionX(minX, maxX);
+	std::uniform_real_distribution<float> distributionY(maxY - 0.25f, maxY);
+	for (auto i = 0; i < 3; i++)
+	{
+		float randomX = distributionX(gen);
+		float randomY = distributionY(gen);
+		std::vector<Vertex> points;
+		points.push_back(Vertex(randomX, randomY));
+		points.push_back(Vertex(randomX + 0.15f, randomY));
+		points.push_back(Vertex(randomX + 0.15f, randomY - 0.25f));
+		points.push_back(Vertex(randomX, randomY - 0.25f));
+		obstacles.push_back(new Obstacle(points, "VertexShader.hlsl", "ObstaclesPixelShader.hlsl"));
+	}
 }

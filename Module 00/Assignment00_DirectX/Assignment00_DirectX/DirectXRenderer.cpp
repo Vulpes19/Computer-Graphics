@@ -111,7 +111,15 @@ void	DirectXRenderer::update(void)
 	});
 	obstacles.erase(it, obstacles.end());
 	if (score == 30)
-		
+	{
+		OutputDebugStringW(L"YOU WIN");
+		PostMessage(hWnd, WM_CLOSE, 0, 0);
+	}
+	if (score == -10)
+	{
+		OutputDebugStringW(L"YOU LOSE");
+		PostMessage(hWnd, WM_CLOSE, 0, 0);
+	}
 }
 
 void	DirectXRenderer::render(void)

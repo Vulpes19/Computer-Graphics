@@ -12,6 +12,9 @@ void	Obstacle::update(int &score)
 	if (v.y < -1.0f)
 	{
 		score += 5;
+		OutputDebugStringA("The score is ");
+		OutputDebugStringA(std::to_string(score).c_str());
+		OutputDebugStringA("\n");
 		isDead = true;
 		return;
 	}
@@ -20,9 +23,6 @@ void	Obstacle::update(int &score)
 		Vertex vertex = vertices[i];
 		vertex.y -= 0.1f;
 		vertices[i] = vertex;
-		OutputDebugStringW(L"Y: ");
-		OutputDebugStringA(std::to_string(vertex.y).c_str());
-		OutputDebugStringW(L" ");
 	}
 	createVertices();
 }
@@ -34,6 +34,9 @@ void	Obstacle::handleCollision(std::vector<Vertex> playerPos, int& score)
 	{
 		isDead = true;
 		score -= 5;
+		OutputDebugStringA("The score is ");
+		OutputDebugStringA(std::to_string(score).c_str());
+		OutputDebugStringA("\n");
 		return;
 	}
 }

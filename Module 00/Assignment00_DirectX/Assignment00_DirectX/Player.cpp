@@ -71,9 +71,6 @@ void	Player::handleMovement(DIRECTION dir)
 			Vertex vertex = vertices[i];
 			vertex.x += 0.1f;
 			vertices[i] = vertex;
-			OutputDebugStringW(L"X: ");
-			OutputDebugStringA(std::to_string(vertex.x).c_str());
-			OutputDebugStringW(L" ");
 		}
 	}
 	if (dir == DIRECTION::LEFT)
@@ -86,11 +83,7 @@ void	Player::handleMovement(DIRECTION dir)
 			Vertex vertex = vertices[i];
 			vertex.x -= 0.1f;
 			vertices[i] = vertex;
-			OutputDebugStringW(L"X: ");
-			OutputDebugStringA(std::to_string(vertex.x).c_str());
-			OutputDebugStringW(L" ");
 		}
 	}
-	OutputDebugStringW(L"\n");
 	createVertices();
 }

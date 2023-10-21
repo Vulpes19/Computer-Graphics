@@ -22,12 +22,13 @@ class GameObject
 		GameObject(std::vector<Vertex>, const char *, const char *);
 		~GameObject(void);
 		virtual void	loadShaders(void);
-		virtual void	update(void) {};
+		virtual void	update(int &) {};
 		virtual bool	deadObstacle(void) const { return (false); };
 		void	createVertices(void);
 		void	createInputElements(ID3D10Blob*);
 		void	render(void);
 		void	setDevice(ID3D11Device*, ID3D11DeviceContext*);
+		std::vector<Vertex>	getPosition(void) const;
 	protected:
 		std::vector<Vertex> vertices;
 		ID3D11Device* device = nullptr;

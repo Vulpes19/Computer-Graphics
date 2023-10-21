@@ -6,11 +6,12 @@ Obstacle::Obstacle(std::vector<Vertex> vertices, const char *vShaderPath = "Vert
 Obstacle::~Obstacle(void)
 {}
 
-void	Obstacle::update(void)
+void	Obstacle::update(int &score)
 {
 	Vertex v = vertices[0];
 	if (v.y < -1.0f)
 	{
+		score += 5;
 		isDead = true;
 		return;
 	}
@@ -24,6 +25,17 @@ void	Obstacle::update(void)
 		OutputDebugStringW(L" ");
 	}
 	createVertices();
+}
+
+void	Obstacle::handleCollision(std::vector<Vertex> playerPos, int& score)
+{
+	if (((vertices[2].x >= playerPos[0].x && vertices[2].x <= playerPos[1].x) || (vertices[3].x >= playerPos[0].x && vertices[3].x <= playerPos[1].x))
+		&& (vertices[2].y <= playerPos[0].y && vertices[2].y >= playerPos[3].y))
+	{
+		isDead = true;
+		score -= 5;
+		return;
+	}
 }
 
 bool	Obstacle::deadObstacle(void) const

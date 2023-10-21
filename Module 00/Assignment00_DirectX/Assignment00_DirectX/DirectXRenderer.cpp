@@ -4,10 +4,10 @@ DirectXRenderer::DirectXRenderer(HWND hWnd) : hWnd(hWnd)
 {
 	initDirect3D();
 	std::vector<Vertex> points;
-	points.push_back({ 0.2f, -0.99f, 0.0f });
-	points.push_back({ -0.2f, -0.99f, 0.0f });
 	points.push_back({ -0.2f, -0.7f, 0.0f });
 	points.push_back({ 0.2f, -0.7f, 0.0f });
+	points.push_back({ 0.2f, -0.99f, 0.0f });
+	points.push_back({ -0.2f, -0.99f, 0.0f });
 	
 	player = new Player(points, "VertexShader.hlsl", "PlayerPixelShader.hlsl");
 	player->setDevice(device, devContext);
@@ -96,18 +96,22 @@ void	DirectXRenderer::update(void)
 	input->processInput();
 	if (obstacles.empty())
 		generateObstacles();
+	for (auto obstacle : obstacles)
+		obstacle->handleCollision(player->getPosition(), score);
 	end = time_clock::now();
 	std::chrono::duration<double> elapsed = std::chrono::duration_cast<std::chrono::duration<double>>(end - start);
 	if (elapsed.count() >= 1.0)
 	{
 		for (auto& obstacle : obstacles)
-			obstacle->update();
+			obstacle->update(score);
 		start = time_clock::now();
 	}
 	auto it = remove_if(obstacles.begin(), obstacles.end(), [](const Obstacle* obstacle) {
 		return obstacle->deadObstacle() ? true : false;
 	});
 	obstacles.erase(it, obstacles.end());
+	if (score == 30)
+		
 }
 
 void	DirectXRenderer::render(void)
@@ -116,8 +120,11 @@ void	DirectXRenderer::render(void)
 	devContext->ClearRenderTargetView(backBuff, color);
 	//test->setDevice(device, devContext);
 	player->render();
-	for (auto &obstacle : obstacles)
-		obstacle->render();
+	for (auto& obstacle : obstacles)
+	{
+		if (!obstacle->deadObstacle())
+			obstacle->render();
+	}
 	HRESULT hr = swapChain->Present(0, 0);
 	if (FAILED(hr))
 		throw(DirectXException(hr, __FILE__, __LINE__));

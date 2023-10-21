@@ -27,6 +27,7 @@ class DirectXRenderer
 		std::vector<Obstacle *> obstacles;
 		time_clock::time_point	start;
 		time_clock::time_point	end;
+		int	score = 0;
 		void	initDirect3D(void);
 		void	createRenderTarget(void);
 		void	setViewport(void);

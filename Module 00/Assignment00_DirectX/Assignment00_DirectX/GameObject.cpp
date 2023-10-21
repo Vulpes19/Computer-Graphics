@@ -122,3 +122,8 @@ void	GameObject::setDevice(ID3D11Device* device, ID3D11DeviceContext* devContext
 	this->device = device;
 	this->devContext = devContext;
 }
+
+std::vector<Vertex>	GameObject::getPosition(void) const
+{
+	return (vertices);
+}
